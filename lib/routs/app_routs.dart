@@ -7,7 +7,7 @@ class AppRoutes {
   static const String loadScreen = '/load_screen';
 
   static Map<String, WidgetBuilder> routes = {
-    loginScreen: (context) => const LoginScreen(),
-    loadScreen: (context) => const LoadScreen(),
+    loginScreen: (context) => LoginScreen(),
+    loadScreen: (context) => LoadScreen(),
   };
 }

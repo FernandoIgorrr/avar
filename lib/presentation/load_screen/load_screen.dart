@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoadScreen extends StatefulWidget {
-  const LoadScreen({Key? key}) : super(key: key);
+  LoadScreen({Key? key}) : super(key: key);
 
   @override
   State<LoadScreen> createState() => _LoadScreenState();
