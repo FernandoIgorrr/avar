@@ -1,0 +1,31 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "avar",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "avar (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "avar (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name"      : "A10-FERNANDO",
+            "request"   : "launch",
+            "type"      : "dart",
+            "deviceId"  : "RX8M70MJECE"
+        }
+    ]
+}
