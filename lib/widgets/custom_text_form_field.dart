@@ -25,11 +25,14 @@ class CustomTextFormField extends StatelessWidget {
     this.fillColor,
     this.filled = true,
     this.validator,
+    this.textAlign,
   }) : super(
           key: key,
         );
 
   final Alignment? alignment;
+
+  final TextAlign? textAlign;
 
   final double? width;
 
@@ -71,7 +74,7 @@ class CustomTextFormField extends StatelessWidget {
 
   final FormFieldValidator<String>? validator;
 
-  final double radius = 15;
+  final double radius = 10.h;
 
   @override
   Widget build(BuildContext context) {
@@ -92,6 +95,7 @@ class CustomTextFormField extends StatelessWidget {
           style: textStyle ?? CustomTextStyles.titleLargeBlack900,
           obscureText: obscureText!,
           textInputAction: textInputAction,
+          textAlign: textAlign ?? TextAlign.center,
           keyboardType: textInputType,
           maxLines: maxLines ?? 1,
           decoration: decoration,

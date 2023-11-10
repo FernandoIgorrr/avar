@@ -122,6 +122,8 @@ class PrimaryColors {
   // Black
   Color get black900 => Color(0XFF000000);
 
+  Color get black900opacity => Color(0XFF000000).withOpacity(0.5);
+
   // BlueGray
   Color get blueGray100 => Color(0XFFD9D9D9);
 

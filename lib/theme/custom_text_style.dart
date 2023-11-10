@@ -14,6 +14,9 @@ class CustomTextStyles {
   static get titleLargeBlack900 => theme.textTheme.titleLarge!.copyWith(
         color: appTheme.black900,
       );
+  static get titleLargeBlack900Opa => theme.textTheme.titleLarge!.copyWith(
+        color: appTheme.black900opacity,
+      );
 }
 
 extension on TextStyle {

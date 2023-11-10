@@ -25,7 +25,7 @@ class _LoadScreenState extends State<LoadScreen> {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: Text('Bem LoadScreen'),
+        child: Text('Bem-vindo, LoadScreen'),
       ),
     );
   }
