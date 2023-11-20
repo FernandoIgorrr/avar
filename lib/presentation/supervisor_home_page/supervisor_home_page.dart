@@ -21,9 +21,107 @@ class SupervisorHomePage extends StatelessWidget {
           width: double.maxFinite,
           decoration: AppDecoration.fillOnPrimary,
           child: Column(
-            children: [],
+            children: [
+              const SizedBox(height: 20), // Espaço vertical entre linhas
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ButtonIcon(),
+                  ButtonIcon(),
+                  ButtonIcon(),
+                ],
+              )
+            ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildUserProfileSection(BuildContext co, ntext) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Container(
+          height: 100.adaptSize,
+          width: 100.adaptSize,
+          padding: EdgeInsets.symmetric(
+            horizontal: 17.h,
+            vertical: 10.v,
+          ),
+          decoration: AppDecoration.fillBlueGray.copyWith(
+            borderRadius: BorderRadiusStyle.roundedBorder10,
+          ),
+          child: CustomImageView(
+            imagePath: ImageConstant.imgProfile,
+            height: 77.v,
+            width: 63.h,
+            alignment: Alignment.center,
+          ),
+        ),
+        Container(
+          height: 100.adaptSize,
+          width: 100.adaptSize,
+          padding: EdgeInsets.symmetric(
+            horizontal: 17.h,
+            vertical: 10.v,
+          ),
+          decoration: AppDecoration.fillBlueGray.copyWith(
+            borderRadius: BorderRadiusStyle.roundedBorder10,
+          ),
+          child: CustomImageView(
+            imagePath: ImageConstant.imgProfile,
+            height: 77.v,
+            width: 63.h,
+            alignment: Alignment.center,
+          ),
+        ),
+        Container(
+          height: 100.adaptSize,
+          width: 100.adaptSize,
+          padding: EdgeInsets.symmetric(
+            horizontal: 17.h,
+            vertical: 10.v,
+          ),
+          decoration: AppDecoration.fillBlueGray.copyWith(
+            borderRadius: BorderRadiusStyle.roundedBorder10,
+          ),
+          child: CustomImageView(
+            imagePath: ImageConstant.imgProfile,
+            height: 77.v,
+            width: 63.h,
+            alignment: Alignment.center,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPatrimNiosSection(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(
+        left: 4.h,
+        right: 20.h,
+      ),
+      child: Row(
+        children: [
+          Text(
+            "lbl_patrim_nios".tr,
+            style: theme.textTheme.titleMedium,
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 25.h),
+            child: Text(
+              "lbl_chamados".tr,
+              style: theme.textTheme.titleMedium,
+            ),
+          ),
+          Spacer(),
+          Text(
+            "lbl_tarefas".tr,
+            style: theme.textTheme.titleMedium,
+          ),
+        ],
       ),
     );
   }
