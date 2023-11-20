@@ -3,5 +3,6 @@
         "Usuario",
         "usuário",
         "verificar"
-    ]
+    ],
+    "java.compile.nullAnalysis.mode": "automatic"
 }

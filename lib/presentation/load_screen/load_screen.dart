@@ -1,6 +1,6 @@
-import 'package:avar/routs/app_routs.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:avar/core/app_export.dart';
 
 class LoadScreen extends StatefulWidget {
   LoadScreen({Key? key}) : super(key: key);
@@ -15,9 +15,9 @@ class _LoadScreenState extends State<LoadScreen> {
     super.initState();
     verificarUsuario().then((value) => {
           if (value)
-            print("asdasd")
+            Navigator.pushNamed(context, AppRoutes.loginScreen)
           else
-            Navigator.pushReplacementNamed(context, AppRoutes.loginScreen)
+            Navigator.pushNamed(context, AppRoutes.loginScreen)
         });
   }
 

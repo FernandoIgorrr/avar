@@ -22,6 +22,12 @@
             "flutterMode": "release"
         },
         {
+            "name"      : "PIXEL 3a XL",
+            "request"   : "launch",
+            "type"      : "dart",
+            "deviceId"  : "emulator-5554"
+        },
+        {
             "name"      : "A10-FERNANDO",
             "request"   : "launch",
             "type"      : "dart",

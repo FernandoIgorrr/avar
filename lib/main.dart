@@ -1,6 +1,6 @@
 import 'package:avar/core/app_export.dart';
-import 'package:avar/routs/app_routs.dart';
 
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -23,7 +23,19 @@ class MyApp extends StatelessWidget {
       title: 'avar',
       debugShowCheckedModeBanner: false,
       navigatorKey: NavigatorService.navigatorKey,
+      localizationsDelegates: const [
+        AppLocalizationDelegate(),
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       //home: LoadScreen(),
+      supportedLocales: const [
+        Locale(
+          'pt',
+          '',
+        ),
+      ],
       initialRoute: AppRoutes.loadScreen,
       routes: AppRoutes.routes,
     );
