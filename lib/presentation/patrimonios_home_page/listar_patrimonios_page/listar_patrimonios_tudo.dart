@@ -59,9 +59,9 @@ class _ListarPatrimoniosTudoState extends State<ListarPatrimoniosTudo> {
                         ),
                         child: Center(
                           child: ExpansionTile(
-                            trailing: SizedBox(
-                              width: 0,
-                            ),
+                            // trailing: SizedBox(
+                            //   width: 0,
+                            // ),
 
                             title: Center(
                               child: Text(

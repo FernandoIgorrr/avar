@@ -122,6 +122,12 @@ class CadastrarPatrimonioPageState extends State<CadastrarPatrimonioPage> {
   Widget _buildTombamento(BuildContext context) {
     return CustomTextFormField(
       controller: tombamentoController,
+      textInputType: TextInputType.number,
+      textStyle: TextStyle(color: appTheme.black900),
+      contentPadding: EdgeInsets.symmetric(
+        horizontal: 0.h,
+        vertical: 12.v,
+      ),
     );
   }
 
@@ -129,15 +135,25 @@ class CadastrarPatrimonioPageState extends State<CadastrarPatrimonioPage> {
   Widget _buildDescricao(BuildContext context) {
     return CustomTextFormField(
       controller: descricaoController,
+      textStyle: TextStyle(color: appTheme.black900),
+      contentPadding: EdgeInsets.symmetric(
+        horizontal: 5.h,
+        vertical: 12.v,
+      ),
     );
   }
 
   /// Section Widget
   Widget _buildEstado(BuildContext context) {
-    return CustomTextFormField(
-      controller: estadoController,
-      textInputAction: TextInputAction.done,
-    );
+    List<Map<String, dynamic>> items = [
+      {"id": 2200, "descricao": "Cadeira"},
+      {"id": 2201, "descricao": "Mesa"},
+      {"id": 2202, "descricao": "Geladeira"},
+      {"id": 2203, "descricao": "Microondas"},
+      {"id": 2204, "descricao": "Monitor"},
+      {"id": 2205, "descricao": "Computador"},
+    ];
+    return CustomDropDownMenu(items: items);
   }
 
   Widget _buildCadastrar(BuildContext context) {

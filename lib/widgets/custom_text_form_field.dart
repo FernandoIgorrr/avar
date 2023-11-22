@@ -74,7 +74,7 @@ class CustomTextFormField extends StatelessWidget {
 
   final FormFieldValidator<String>? validator;
 
-  final double radius = 10.h;
+  final double radius = 10;
 
   @override
   Widget build(BuildContext context) {
