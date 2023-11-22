@@ -3,8 +3,8 @@ import 'package:avar/widgets/custom_bottom_bar.dart';
 import 'package:flutter/material.dart';
 
 // ignore_for_file: must_be_immutable
-class SupervisorHomePage extends StatelessWidget {
-  const SupervisorHomePage({Key? key})
+class ListarPatrimoniosPage extends StatelessWidget {
+  const ListarPatrimoniosPage({Key? key})
       : super(
           key: key,
         );
@@ -15,37 +15,31 @@ class SupervisorHomePage extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-        // appBar: CustomAppBar(
-        //   title: AppbarTitle(text: 'lbl_home'.tr),
-        // ),
         appBar: CustomAppBar(
-            automaticallyImplyLeading: false,
-            title: AppbarTitle(
-              text: "lbl_home".tr,
-            )),
+          title: AppbarTitle(text: "lbl_listar_patrimonios".tr),
+        ),
         body: Container(
           width: double.maxFinite,
           decoration: AppDecoration.fillOnPrimary,
           child: Column(
             children: [
-              const SizedBox(height: 25), // Espaço vertical entre linhas
+              SizedBox(height: 25.adaptSize),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ButtonIcon(
-                      text: "lbl_patrimonios".tr,
-                      routeName: AppRoutes.patrimoniosHomePage),
-                  ButtonIcon(text: "lbl_chamados".tr),
-                  ButtonIcon(text: "lbl_tarefas".tr),
+                      text: "lbl_listar_tudo".tr,
+                      routeName: AppRoutes.listarPatrimoniosTudo),
+                  ButtonIcon(text: "lbl_listar_por_complexo".tr),
+                  ButtonIcon(text: "lbl_listar_por_predio".tr),
                 ],
               ),
-              const SizedBox(height: 25), // Espaço vertical entre linhas
+              SizedBox(height: 25.adaptSize),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  ButtonIcon(text: "lbl_bolsistas".tr),
-                  ButtonIcon(text: "lbl_relatorios".tr),
-                  ButtonIcon(text: "Datas"),
+                  ButtonIcon(text: "lbl_listar_por_andar".tr),
+                  ButtonIcon(text: "lbl_listar_por_comodo".tr),
                 ],
               ),
             ],

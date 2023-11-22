@@ -5,13 +5,11 @@ import 'package:flutter/material.dart';
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   CustomAppBar({
     Key? key,
+    this.title,
     this.height,
     this.styleType,
-    this.leadingWidth,
-    this.leading,
-    this.title,
+    this.automaticallyImplyLeading,
     this.centerTitle,
-    this.actions,
   }) : super(
           key: key,
         );
@@ -20,30 +18,34 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   final Style? styleType;
 
-  final double? leadingWidth;
+  // final double? leadingWidth;
 
-  final Widget? leading;
+  //final Widget? leading;
+
+  final bool? automaticallyImplyLeading;
 
   final Widget? title;
 
   final bool? centerTitle;
 
-  final List<Widget>? actions;
+  //final List<Widget>? actions;
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      automaticallyImplyLeading: automaticallyImplyLeading ?? true,
       elevation: 0,
       toolbarHeight: height ?? 60.v,
-      automaticallyImplyLeading: false,
       backgroundColor: appTheme.purple500,
       flexibleSpace: _getStyle(),
-      leadingWidth: leadingWidth ?? 0,
-      leading: leading,
+      //leading: leading,
       title: title,
       titleSpacing: 0,
+      //actions: actions,
       centerTitle: centerTitle ?? true,
-      actions: actions,
+      iconTheme: IconThemeData(
+        color: appTheme.blueGray100,
+      ),
     );
   }
 
@@ -52,6 +54,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         mediaQueryData.size.width,
         height ?? 60.v,
       );
+
   _getStyle() {
     switch (styleType) {
       case Style.bgFill:

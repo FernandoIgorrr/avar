@@ -129,6 +129,8 @@ class PrimaryColors {
 
   // Purple
   Color get purple500 => Color(0XFF9C27B0);
+
+  Color get blackLight => Color(0xFF4A4A4A);
 }
 
 PrimaryColors get appTheme => ThemeHelper().themeColor();

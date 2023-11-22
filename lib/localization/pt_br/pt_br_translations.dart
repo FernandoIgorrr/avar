@@ -1,10 +1,16 @@
 final Map<String, String> ptBr = {
   // Login Screen
-  "lbl_acessar": "Acessar", "lbl_senha": "  Senha", "lbl_usu_rio": "  Usuário",
+  "lbl_acessar": "Acessar",
+  "lbl_senha": "Senha",
+  "lbl_usuario": "Usuário",
 
   // Funcionario_Home Screen
-  "lbl_bolsistas": "Bolsistas", "lbl_chamados": "Chamados", "lbl_home": "Home",
-  "lbl_relat_rios": "Relatórios", "lbl_tarefas": "Tarefas",
+  "lbl_patrimonios": "Patrimônios",
+  "lbl_bolsistas": "Bolsistas",
+  "lbl_chamados": "Chamados",
+  "lbl_home": "Home",
+  "lbl_relatorios": "Relatórios",
+  "lbl_tarefas": "Tarefas",
 
   // Patrimonios One Screen
   "lbl_alienamentos": "Alienamentos",
@@ -13,30 +19,31 @@ final Map<String, String> ptBr = {
   "lbl_listar": "Listar",
   "lbl_manejos": "Manejos",
   "lbl_sobre": "Sobre",
-  "lbl_transfer_ncias": "Transferências",
+  "lbl_transferencias": "Transferências",
 
   // Cadastrar_Patrimonio Screen
-  "msg_cadastrar_patrim_nio": "Cadastrar patrimônio",
+  "msg_cadastrar_patrimonio": "Cadastrar patrimônio",
 
   // Cadastrar_Computador Screen
   "lbl_computador": "  Computador",
 
   // Cadastrar_Computador One Screen
   "lbl_hd": "  HD", "lbl_ram": "  RAM",
-  "msg_sistema_operacional": "  Sistema Operacional",
+  "lbl_sistema_operacional": "  Sistema Operacional",
 
   // Patrimonios Screen
   "lbl_listar_tudo": "Listar tudo",
-  "msg_listar_patrim_nios": "Listar patrimônios",
-  "msg_listar_por_andar": "Listar por Andar",
-  "msg_listar_por_complexo": "Listar por complexo",
-  "msg_listar_por_pr_dio": "Listar por prédio",
+  "lbl_listar_patrimonios": "Listar patrimônios",
+  "lbl_listar_por_andar": "Listar por Andar",
+  "lbl_listar_por_complexo": "Listar por complexo",
+  "lbl_listar_por_predio": "Listar por prédio",
+  "lbl_listar_por_comodo": "Listar por comodo",
 
   // LIstar_por_comodo Screen
   "lbl_andar": "  Andar",
-  "lbl_c_modo": "  Cômodo",
+  "lbl_comodo": "  Cômodo",
   "lbl_complexo": "  Complexo",
-  "lbl_pr_dio": "  Prédio",
+  "lbl_predio": "  Prédio",
   "msg_baixar": "Baixar               Listar",
 
   // Desligar Bolsista Screen
@@ -47,16 +54,10 @@ final Map<String, String> ptBr = {
   "lbl_bolsista_s2": "  Bolsista(s)", "lbl_patrim_nio_s2": "  Patrimônio(s)",
   "lbl_t_tulo": "  Título",
 
-  // Cadastrar_bolsista One Screen
-  "lbl_andar2": "  ANDAR",
-  "lbl_c_modo2": "  CÔMODO",
-  "lbl_complexo2": "  COMPLEXO",
-  "lbl_local": "  Local",
-  "lbl_pr_dio2": "  PRÉDIO",
-
   // Common String
   "lbl_cadastrar": "Cadastrar",
-  "lbl_descri_o": "  Descrição",
+  "lbl_cadastrar_patrimonio": "Cadastrar patrimônio",
+  "lbl_descricao": "  Descrição",
   "lbl_estado": "  Estado",
   "lbl_modelo": "  Modelo",
   "lbl_patrim_nio": "Patrimônio",
@@ -64,11 +65,12 @@ final Map<String, String> ptBr = {
   "lbl_serial": "  Serial",
   "lbl_tipo": "  Tipo",
   "lbl_tombamento": "  Tombamento",
-  "msg_cadastrar_chamado": "Cadastrar chamado",
-  "msg_cadastrar_computador": "Cadastrar computador",
-  "msg_listar_por_c_modo": "Listar por cômodo",
+  "lbl_cadastrar_chamado": "Cadastrar chamado",
+  "lbl_cadastrar_computador": "Cadastrar computador",
 
 // Network Error String
-  "msg_network_err": "Network Error",
+  "msg_erro_de_rede": "Erro na rede",
+  "msg_erro_usuario_senha": "Usuário ou senha inválidos",
+  "msg_erro_autorizacao": "Ação não autorizada",
   "msg_something_went_wrong": "Something Went Wrong!",
 };

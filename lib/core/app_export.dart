@@ -15,5 +15,8 @@ export 'package:avar/widgets/custom_elevated_button.dart';
 export 'package:avar/widgets/app_bar/custom_app_bar.dart';
 export 'package:avar/widgets/app_bar/appbar_title.dart';
 export 'package:avar/widgets/button_icon.dart';
+export 'package:avar/widgets/custom_list_view.dart';
 //ROTAS
 export 'package:avar/routs/app_routs.dart';
+//URI API
+export 'package:avar/core/utils/api_uris.dart';

@@ -17,22 +17,22 @@ class CustomBottomBarState extends State<CustomBottomBar> {
     BottomMenuModel(
       icon: ImageConstant.imgHomeicon1,
       activeIcon: ImageConstant.imgHomeicon1,
-      type: BottomBarEnum.Homeicon1,
+      type: BottomBarEnum.Home,
     ),
     BottomMenuModel(
       icon: ImageConstant.imgMagnifierSearchZoomIcon,
       activeIcon: ImageConstant.imgMagnifierSearchZoomIcon,
-      type: BottomBarEnum.Magnifiersearchzoomicon,
+      type: BottomBarEnum.Pesquisa,
     ),
     BottomMenuModel(
       icon: ImageConstant.imgCalendarIcon1,
       activeIcon: ImageConstant.imgCalendarIcon1,
-      type: BottomBarEnum.Calendaricon1,
+      type: BottomBarEnum.Calendario,
     ),
     BottomMenuModel(
       icon: ImageConstant.imgMenuListNavig,
       activeIcon: ImageConstant.imgMenuListNavig,
-      type: BottomBarEnum.Menulistnavig,
+      type: BottomBarEnum.Menu,
     )
   ];
 
@@ -55,13 +55,13 @@ class CustomBottomBarState extends State<CustomBottomBar> {
           return BottomNavigationBarItem(
             icon: CustomImageView(
               imagePath: bottomMenuList[index].icon,
-              height: 53.v,
-              width: 59.h,
+              height: 32.v,
+              width: 32.h,
             ),
             activeIcon: CustomImageView(
               imagePath: bottomMenuList[index].activeIcon,
-              height: 48.adaptSize,
-              width: 48.adaptSize,
+              height: 25.adaptSize,
+              width: 25.adaptSize,
             ),
             label: '',
           );
@@ -70,6 +70,9 @@ class CustomBottomBarState extends State<CustomBottomBar> {
           selectedIndex = index;
           widget.onChanged?.call(bottomMenuList[index].type);
           setState(() {});
+          if (bottomMenuList[index].type == BottomBarEnum.Home)
+            Navigator.pushReplacementNamed(
+                context, AppRoutes.supervisorHomePage);
         },
       ),
     );
@@ -77,10 +80,10 @@ class CustomBottomBarState extends State<CustomBottomBar> {
 }
 
 enum BottomBarEnum {
-  Homeicon1,
-  Magnifiersearchzoomicon,
-  Calendaricon1,
-  Menulistnavig,
+  Home,
+  Pesquisa,
+  Calendario,
+  Menu,
 }
 
 class BottomMenuModel {

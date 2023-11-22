@@ -49,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 CustomTextFormField(
                   controller: _userNameController,
-                  hintText: "lbl_usu_rio".tr,
+                  hintText: "lbl_usuario".tr,
                   contentPadding: EdgeInsets.symmetric(
                     horizontal: 11.h,
                     vertical: 12.v,
@@ -102,7 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
         await SharedPreferences.getInstance();
 
     try {
-      var url = Uri.parse("http://10.0.2.2:8080/api/auth/login");
+      var url = Uri.parse(URIsAPI.uri_login);
 
       Map<String, String> headers = {
         'Content-Type': 'application/json',
@@ -126,27 +126,26 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (response.statusCode == 200) {
         String token = jsonDecode(response.body)['token'];
-        await _sharedPreferences.setString('token', 'Token $token');
+        await _sharedPreferences.setString('token', 'Bearer $token');
         if (!mounted) return;
         Navigator.of(context)
             .pushReplacementNamed(AppRoutes.supervisorHomePage);
       } else {
         if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: Colors.redAccent,
           content:
-              Text("Usuário ou senha inválidos", textAlign: TextAlign.center),
+              Text("msg_erro_usuario_senha".tr, textAlign: TextAlign.center),
           behavior: SnackBarBehavior.floating,
-          duration: Duration(seconds: 5),
+          duration: const Duration(seconds: 5),
         ));
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor: Colors.redAccent,
-        content: Text('Não foi possível se connectar ao servidor',
-            textAlign: TextAlign.center),
+        content: Text("msg_erro_de_rede".tr, textAlign: TextAlign.center),
         behavior: SnackBarBehavior.floating,
-        duration: Duration(seconds: 5),
+        duration: const Duration(seconds: 5),
       ));
     }
   }
