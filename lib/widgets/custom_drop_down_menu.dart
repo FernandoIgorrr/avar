@@ -2,16 +2,18 @@ import 'package:avar/theme/theme_helper.dart';
 import 'package:flutter/material.dart';
 
 class CustomDropDownMenu extends StatefulWidget {
-  CustomDropDownMenu({super.key, required this.items});
+  CustomDropDownMenu({super.key, required this.items, this.selectedItemId});
 
   final List<Map<String, dynamic>> items;
+  int? selectedItemId;
 
   @override
-  State<CustomDropDownMenu> createState() => _CustomDropDownMenuState(items);
+  State<CustomDropDownMenu> createState() =>
+      _CustomDropDownMenuState(items, selectedItemId);
 }
 
 class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
-  _CustomDropDownMenuState(this.items);
+  _CustomDropDownMenuState(this.items, this.selectedItemId);
 
   final List<Map<String, dynamic>> items;
 
@@ -20,12 +22,18 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.only(
+        top: 0,
+        right: 70.0,
+        bottom: 0,
+        left: 70.0,
+      ),
       child: Column(
         children: [
           DropdownButtonFormField<int>(
+              isExpanded: true,
+              alignment: Alignment.center,
               value: selectedItemId,
-              //decoration: InputDecoration(labelText: 'Selecione um item'),
               decoration: InputDecoration(
                 filled: true,
                 fillColor: appTheme.blueGray100,
@@ -36,10 +44,18 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
               ),
               items: items.map((item) {
                 return DropdownMenuItem<int>(
-                  value: item['id'],
-                  child: Text(item['descricao'],
-                      style: TextStyle(color: appTheme.black900)),
-                );
+                    alignment: Alignment.center,
+                    value: item['id'],
+                    child: Align(
+                      //alignment: const Alignment(0.2, 0),
+                      child: Text(
+                        item['descricao'],
+                        style: TextStyle(color: appTheme.black900),
+                      ),
+                    )
+                    // child: Text(item['descricao'],
+                    //     style: TextStyle(color: appTheme.black900)),
+                    );
               }).toList(),
               onChanged: (int? value) {
                 setState(() {

@@ -72,3 +72,55 @@ class PatrimonioCadastrar {
     return data;
   }
 }
+
+class EstadoPatrimonio {
+  int? id;
+  String? descricao;
+
+  EstadoPatrimonio({this.id, this.descricao});
+
+  EstadoPatrimonio.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    descricao = json['descricao'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['descricao'] = this.descricao;
+    return data;
+  }
+
+  static List<Map<String, dynamic>> convertListToMapList(
+      List<EstadoPatrimonio> estadoPatrimonioList) {
+    return estadoPatrimonioList
+        .map((estadoPatrimonio) => estadoPatrimonio.toJson())
+        .toList();
+  }
+}
+
+class TipoPatrimonio {
+  int? id;
+  String? descricao;
+
+  TipoPatrimonio({this.id, this.descricao});
+
+  TipoPatrimonio.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    descricao = json['descricao'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['descricao'] = this.descricao;
+    return data;
+  }
+
+  static List<Map<String, dynamic>> convertListToMapList(
+      List<TipoPatrimonio> tipoPatrimonioList) {
+    return tipoPatrimonioList
+        .map((tipoPatrimonio) => tipoPatrimonio.toJson())
+        .toList();
+  }
+}
