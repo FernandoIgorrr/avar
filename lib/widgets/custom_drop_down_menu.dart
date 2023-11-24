@@ -2,22 +2,36 @@ import 'package:avar/theme/theme_helper.dart';
 import 'package:flutter/material.dart';
 
 class CustomDropDownMenu extends StatefulWidget {
-  CustomDropDownMenu({super.key, required this.items, this.selectedItemId});
+  CustomDropDownMenu({
+    super.key,
+    required this.items,
+    this.selectedItemId,
+    this.selectedItemIdController,
+  });
 
   final List<Map<String, dynamic>> items;
   int? selectedItemId;
+  final TextEditingController? selectedItemIdController;
 
   @override
   State<CustomDropDownMenu> createState() =>
-      _CustomDropDownMenuState(items, selectedItemId);
+      _CustomDropDownMenuState(items, selectedItemId, selectedItemIdController);
 }
 
 class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
-  _CustomDropDownMenuState(this.items, this.selectedItemId);
+  _CustomDropDownMenuState(
+      this.items, this.selectedItemId, this.selectedItemIdController);
 
   final List<Map<String, dynamic>> items;
-
+  final TextEditingController? selectedItemIdController;
   int? selectedItemId;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    widget.selectedItemIdController?.text = items.first['id'].toString();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +52,8 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
                 filled: true,
                 fillColor: appTheme.blueGray100,
                 border: OutlineInputBorder(
-                  borderRadius:
-                      BorderRadius.circular(10.0), // Defina o raio de borda
-                ), // Defina a cor de fundo desejada
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
               ),
               items: items.map((item) {
                 return DropdownMenuItem<int>(
@@ -60,6 +73,7 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
               onChanged: (int? value) {
                 setState(() {
                   selectedItemId = value!;
+                  widget.selectedItemIdController?.text = value.toString();
                 });
               },
               borderRadius: BorderRadius.circular(10.0),

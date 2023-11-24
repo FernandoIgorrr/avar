@@ -62,13 +62,13 @@ class PatrimonioCadastrar {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['tombamento'] = this.tombamento;
-    data['descricao'] = this.descricao;
-    data['estado'] = this.estado;
-    data['tipo'] = this.tipo;
-    data['localidade'] = this.localidade;
-    data['alienado'] = this.alienado;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['tombamento'] = tombamento;
+    data['descricao'] = descricao;
+    data['estado'] = estado;
+    data['tipo'] = tipo;
+    data['localidade'] = localidade;
+    data['alienado'] = alienado;
     return data;
   }
 }
@@ -85,9 +85,9 @@ class EstadoPatrimonio {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['descricao'] = this.descricao;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['descricao'] = descricao;
     return data;
   }
 
@@ -111,9 +111,9 @@ class TipoPatrimonio {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['descricao'] = this.descricao;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['descricao'] = descricao;
     return data;
   }
 

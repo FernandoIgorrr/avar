@@ -16,11 +16,15 @@ class CadastrarPatrimonioPage extends StatefulWidget {
 }
 
 class CadastrarPatrimonioPageState extends State<CadastrarPatrimonioPage> {
-  TextEditingController tombamentoController = TextEditingController();
+  TextEditingController _tombamentoController = TextEditingController();
 
-  TextEditingController descricaoController = TextEditingController();
+  TextEditingController _descricaoController = TextEditingController();
 
-  TextEditingController estadoController = TextEditingController();
+  TextEditingController _estadoController = TextEditingController();
+
+  TextEditingController _tipoController = TextEditingController();
+
+  int? selectedId;
 
   GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 
@@ -64,7 +68,7 @@ class CadastrarPatrimonioPageState extends State<CadastrarPatrimonioPage> {
                         ),
                         SizedBox(height: 12.v),
                         FutureBuilder<Widget>(
-                          future: _buildEstados(context),
+                          future: _buildEstados(context, _estadoController),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
@@ -83,7 +87,7 @@ class CadastrarPatrimonioPageState extends State<CadastrarPatrimonioPage> {
                         ),
                         SizedBox(height: 12.v),
                         FutureBuilder<Widget>(
-                          future: _buildTipos(context),
+                          future: _buildTipos(context, _tipoController),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
@@ -114,7 +118,7 @@ class CadastrarPatrimonioPageState extends State<CadastrarPatrimonioPage> {
   /// Section Widget
   Widget _buildTombamento(BuildContext context) {
     return CustomTextFormField(
-      controller: tombamentoController,
+      controller: _tombamentoController,
       textInputType: TextInputType.number,
       contentPadding: EdgeInsets.symmetric(
         horizontal: 0.h,
@@ -126,8 +130,8 @@ class CadastrarPatrimonioPageState extends State<CadastrarPatrimonioPage> {
   /// Section Widget
   Widget _buildDescricao(BuildContext context) {
     return CustomTextFormField(
-      controller: descricaoController,
-      maxLines: 5,
+      controller: _descricaoController,
+      maxLines: 3,
       contentPadding: EdgeInsets.symmetric(
         horizontal: 15.h,
         vertical: 12.v,
@@ -136,17 +140,21 @@ class CadastrarPatrimonioPageState extends State<CadastrarPatrimonioPage> {
   }
 
   /// Section Widget
-  Future<Widget> _buildEstados(BuildContext context) async {
+  Future<Widget> _buildEstados(
+      BuildContext context, TextEditingController estadoController) async {
     List<Map<String, dynamic>> items = await listarEstadosPatrimonio();
     return CustomDropDownMenu(
+      selectedItemIdController: estadoController,
       items: items,
       selectedItemId: items.first['id'],
     );
   }
 
-  Future<Widget> _buildTipos(BuildContext context) async {
+  Future<Widget> _buildTipos(
+      BuildContext context, TextEditingController tipoController) async {
     List<Map<String, dynamic>> items = await listarTiposPatrimonio();
     return CustomDropDownMenu(
+      selectedItemIdController: tipoController,
       items: items,
       selectedItemId: items.first['id'],
     );
@@ -154,13 +162,15 @@ class CadastrarPatrimonioPageState extends State<CadastrarPatrimonioPage> {
 
   Widget _buildCadastrar(BuildContext context) {
     return CustomElevatedButton(
-      text: "lbl_cadastrar".tr,
-      margin: EdgeInsets.only(
-        left: 15.h,
-        right: 15.h,
-      ),
-      alignment: Alignment.centerRight,
-    );
+        text: "lbl_cadastrar".tr,
+        margin: EdgeInsets.only(
+          left: 15.h,
+          right: 15.h,
+        ),
+        alignment: Alignment.centerRight,
+        onPressed: () {
+          cadastrar();
+        });
   }
 
   Future<List<Map<String, dynamic>>> listarEstadosPatrimonio() async {
@@ -199,7 +209,6 @@ class CadastrarPatrimonioPageState extends State<CadastrarPatrimonioPage> {
 
   Future<List<Map<String, dynamic>>> listarTiposPatrimonio() async {
     String? token = await recuperarToken();
-    print('Token : $token');
     if (token == '' || token == null) {
       // if (!mounted) return new List<Patrimonio>();
       // ignore: use_build_context_synchronously
@@ -234,5 +243,10 @@ class CadastrarPatrimonioPageState extends State<CadastrarPatrimonioPage> {
   Future<String?> recuperarToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('token');
+  }
+
+  cadastrar() async {
+    print(
+        "JSON: \n PATRIMONIO: \n TOMBAMENTO: ${} ${estadoController.text}\n TIPOS: ${tipoController.text}");
   }
 }
