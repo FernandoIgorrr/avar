@@ -40,6 +40,7 @@ final Map<String, String> ptBr = {
   "lbl_listar_por_comodo": "Listar por comodo",
 
   // LIstar_por_comodo Screen
+  "lbl_localidade": "Localidade",
   "lbl_andar": "  Andar",
   "lbl_comodo": "  Cômodo",
   "lbl_complexo": "  Complexo",

@@ -1,4 +1,5 @@
 import 'package:avar/core/app_export.dart';
+import 'package:avar/domain/localidade.dart';
 import 'package:avar/domain/patrimonio.dart';
 import 'package:avar/widgets/custom_bottom_bar.dart';
 import 'package:flutter/material.dart';
@@ -24,9 +25,23 @@ class CadastrarPatrimonioPageState extends State<CadastrarPatrimonioPage> {
 
   TextEditingController _tipoController = TextEditingController();
 
-  int? selectedId;
+  TextEditingController _complexoController = TextEditingController();
+
+  TextEditingController _predioController = TextEditingController();
+
+  TextEditingController _andarController = TextEditingController();
+
+  TextEditingController _comodoController = TextEditingController();
+
+  //int? selectedId;
 
   GlobalKey<NavigatorState> navigatorKey = GlobalKey();
+
+  @override
+  void initState() {
+//_comodoController = await
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +83,7 @@ class CadastrarPatrimonioPageState extends State<CadastrarPatrimonioPage> {
                         ),
                         SizedBox(height: 12.v),
                         FutureBuilder<Widget>(
-                          future: _buildEstados(context, _estadoController),
+                          future: _buildEstados(context),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
@@ -87,7 +102,61 @@ class CadastrarPatrimonioPageState extends State<CadastrarPatrimonioPage> {
                         ),
                         SizedBox(height: 12.v),
                         FutureBuilder<Widget>(
-                          future: _buildTipos(context, _tipoController),
+                          future: _buildTipos(context),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const LinearProgressIndicator();
+                            } else if (snapshot.hasError) {
+                              return Text('Erro: ${snapshot.error}');
+                            } else {
+                              return snapshot.data ?? const SizedBox();
+                            }
+                          },
+                        ),
+                        SizedBox(height: 12.v),
+                        SizedBox(
+                          width: double.maxFinite,
+                          height: 2,
+                          child: Container(color: appTheme.blueGray100),
+                        ),
+                        SizedBox(height: 12.v),
+                        Text(
+                          "lbl_localidade".tr,
+                          style: theme.textTheme.titleLarge,
+                        ),
+                        SizedBox(height: 12.v),
+                        SizedBox(
+                          width: double.maxFinite,
+                          height: 2,
+                          child: Container(color: appTheme.blueGray100),
+                        ),
+                        SizedBox(height: 12.v),
+                        Text(
+                          "lbl_complexo".tr,
+                          style: theme.textTheme.titleLarge,
+                        ),
+                        SizedBox(height: 12.v),
+                        FutureBuilder<Widget>(
+                          future: _buildComplexo(context),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const LinearProgressIndicator();
+                            } else if (snapshot.hasError) {
+                              return Text('Erro: ${snapshot.error}');
+                            } else {
+                              return snapshot.data ?? const SizedBox();
+                            }
+                          },
+                        ),
+                        Text(
+                          "lbl_complexo".tr,
+                          style: theme.textTheme.titleLarge,
+                        ),
+                        SizedBox(height: 12.v),
+                        FutureBuilder<Widget>(
+                          future: _buildPredio(context),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
@@ -140,21 +209,40 @@ class CadastrarPatrimonioPageState extends State<CadastrarPatrimonioPage> {
   }
 
   /// Section Widget
-  Future<Widget> _buildEstados(
-      BuildContext context, TextEditingController estadoController) async {
+  Future<Widget> _buildEstados(BuildContext context) async {
     List<Map<String, dynamic>> items = await listarEstadosPatrimonio();
     return CustomDropDownMenu(
-      selectedItemIdController: estadoController,
+      selectedItemIdController: _estadoController,
       items: items,
       selectedItemId: items.first['id'],
     );
   }
 
-  Future<Widget> _buildTipos(
-      BuildContext context, TextEditingController tipoController) async {
+  Future<Widget> _buildTipos(BuildContext context) async {
     List<Map<String, dynamic>> items = await listarTiposPatrimonio();
     return CustomDropDownMenu(
-      selectedItemIdController: tipoController,
+      selectedItemIdController: _tipoController,
+      items: items,
+      selectedItemId: items.first['id'],
+    );
+  }
+
+  Future<Widget> _buildComplexo(BuildContext context) async {
+    List<Map<String, dynamic>> items = await listarComplexos();
+    return CustomDropDownMenu(
+      descName: 'nome',
+      selectedItemIdController: _complexoController,
+      items: items,
+      selectedItemId: items.first['id'],
+    );
+  }
+
+  Future<Widget> _buildPredio(BuildContext context) async {
+    List<Map<String, dynamic>> items =
+        await listarPredios(int.parse(_complexoController.text));
+    return CustomDropDownMenu(
+      descName: 'nome',
+      selectedItemIdController: _predioController,
       items: items,
       selectedItemId: items.first['id'],
     );
@@ -195,7 +283,7 @@ class CadastrarPatrimonioPageState extends State<CadastrarPatrimonioPage> {
         'Authorization': token
       });
       if (response.statusCode == 200) {
-        List estadosPatrimonio0 = json.decode(response.body);
+        List estadosPatrimonio0 = jsonDecode(utf8.decode(response.bodyBytes));
 
         var estadosPatrimonio = estadosPatrimonio0
             .map((json) => EstadoPatrimonio.fromJson(json))
@@ -228,12 +316,79 @@ class CadastrarPatrimonioPageState extends State<CadastrarPatrimonioPage> {
         'Authorization': token
       });
       if (response.statusCode == 200) {
-        List tiposPatrimonio0 = json.decode(response.body);
+        List tiposPatrimonio0 = jsonDecode(utf8.decode(response.bodyBytes));
 
         var tiposPatrimonio = tiposPatrimonio0
             .map((json) => TipoPatrimonio.fromJson(json))
             .toList();
         return TipoPatrimonio.convertListToMapList(tiposPatrimonio);
+      } else {
+        throw Exception("msg_erro_autorizacao".tr);
+      }
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> listarComplexos() async {
+    String? token = await recuperarToken();
+    if (token == '' || token == null) {
+      // if (!mounted) return new List<Patrimonio>();
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: Colors.redAccent,
+        content: Text("msg_erro_autorizacao".tr, textAlign: TextAlign.center),
+        behavior: SnackBarBehavior.floating,
+        duration: const Duration(seconds: 5),
+      ));
+      throw Exception("msg_erro_autorizacao".tr);
+    } else {
+      var url = Uri.parse(URIsAPI.uri_complexos);
+
+      var response = await http.get(url, headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': token
+      });
+      if (response.statusCode == 200) {
+        List complexos0 = jsonDecode(utf8.decode(response.bodyBytes));
+
+        var complexos =
+            complexos0.map((json) => Complexo.fromJson(json)).toList();
+        return Complexo.convertListToMapList(complexos);
+      } else {
+        throw Exception("msg_erro_autorizacao".tr);
+      }
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> listarPredios(int complexo) async {
+    String? token = await recuperarToken();
+    if (token == '' || token == null) {
+      // if (!mounted) return new List<Patrimonio>();
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: Colors.redAccent,
+        content: Text("msg_erro_autorizacao".tr, textAlign: TextAlign.center),
+        behavior: SnackBarBehavior.floating,
+        duration: const Duration(seconds: 5),
+      ));
+      throw Exception("msg_erro_autorizacao".tr);
+    } else {
+      final params = {'complexo': '$complexo'};
+      var url = Uri.parse(
+        URIsAPI.uri_predios,
+      );
+      final urlWithParams = Uri.http(url.authority, url.path, params);
+      var response = await http.get(url, headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': token
+      });
+      if (response.statusCode == 200) {
+        List complexos0 = jsonDecode(utf8.decode(response.bodyBytes));
+
+        var complexos =
+            complexos0.map((json) => Complexo.fromJson(json)).toList();
+        return Complexo.convertListToMapList(complexos);
       } else {
         throw Exception("msg_erro_autorizacao".tr);
       }
@@ -247,6 +402,6 @@ class CadastrarPatrimonioPageState extends State<CadastrarPatrimonioPage> {
 
   cadastrar() async {
     print(
-        "JSON: \n PATRIMONIO: \n TOMBAMENTO: ${} ${estadoController.text}\n TIPOS: ${tipoController.text}");
+        "JSON: \n PATRIMONIO: \n TOMBAMENTO: ${_tombamentoController.text} \n Descrição: ${_descricaoController.text} \n ESTADO: ${_estadoController.text}\n TIPOS: ${_tipoController.text}");
   }
 }

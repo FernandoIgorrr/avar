@@ -120,7 +120,7 @@ class _ListarPatrimoniosTudoState extends State<ListarPatrimoniosTudo> {
       });
 
       if (response.statusCode == 200) {
-        List listaPatrimonios = json.decode(response.body);
+        List listaPatrimonios = jsonDecode(utf8.decode(response.bodyBytes));
         return listaPatrimonios
             .map((json) => PatrimonioListar.fromJson(json))
             .toList();

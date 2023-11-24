@@ -7,30 +7,32 @@ class CustomDropDownMenu extends StatefulWidget {
     required this.items,
     this.selectedItemId,
     this.selectedItemIdController,
+    this.descName,
   });
 
   final List<Map<String, dynamic>> items;
   int? selectedItemId;
   final TextEditingController? selectedItemIdController;
+  final String? descName;
 
   @override
-  State<CustomDropDownMenu> createState() =>
-      _CustomDropDownMenuState(items, selectedItemId, selectedItemIdController);
+  State<CustomDropDownMenu> createState() => _CustomDropDownMenuState(
+      items, selectedItemId, selectedItemIdController, descName);
 }
 
 class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
-  _CustomDropDownMenuState(
-      this.items, this.selectedItemId, this.selectedItemIdController);
+  _CustomDropDownMenuState(this.items, this.selectedItemId,
+      this.selectedItemIdController, this.descName);
 
   final List<Map<String, dynamic>> items;
   final TextEditingController? selectedItemIdController;
   int? selectedItemId;
+  final String? descName;
 
   @override
   void initState() {
-    // TODO: implement initState
-    super.initState();
     widget.selectedItemIdController?.text = items.first['id'].toString();
+    super.initState();
   }
 
   @override
@@ -62,7 +64,7 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
                     child: Align(
                       //alignment: const Alignment(0.2, 0),
                       child: Text(
-                        item['descricao'],
+                        item[descName] ?? item['descricao'],
                         style: TextStyle(color: appTheme.black900),
                       ),
                     )
@@ -70,7 +72,7 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
                     //     style: TextStyle(color: appTheme.black900)),
                     );
               }).toList(),
-              onChanged: (int? value) {
+              onChanged: (int? value) async {
                 setState(() {
                   selectedItemId = value!;
                   widget.selectedItemIdController?.text = value.toString();
