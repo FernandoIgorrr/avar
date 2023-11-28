@@ -1,3 +1,76 @@
+class ComputadorListar {
+  String? id;
+  String? tombamento;
+  String? serial;
+  String? modelo;
+  String? sistemaOperacional;
+  String? ram;
+  String? ramDdr;
+  String? hd;
+  String? descricao;
+  String? estado;
+  bool? alienado;
+  String? comodo;
+  String? andar;
+  String? predio;
+  String? complexo;
+
+  ComputadorListar(
+      {this.id,
+      this.tombamento,
+      this.serial,
+      this.modelo,
+      this.sistemaOperacional,
+      this.ram,
+      this.ramDdr,
+      this.hd,
+      this.descricao,
+      this.estado,
+      this.alienado,
+      this.comodo,
+      this.andar,
+      this.predio,
+      this.complexo});
+
+  ComputadorListar.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    tombamento = json['tombamento'];
+    serial = json['serial'];
+    modelo = json['modelo'];
+    sistemaOperacional = json['sistema_operacional'];
+    ram = json['ram'];
+    ramDdr = json['ram_ddr'];
+    hd = json['hd'];
+    descricao = json['descricao'];
+    estado = json['estado'];
+    alienado = json['alienado'];
+    comodo = json['comodo'];
+    andar = json['andar'];
+    predio = json['predio'];
+    complexo = json['complexo'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['tombamento'] = this.tombamento;
+    data['serial'] = this.serial;
+    data['modelo'] = this.modelo;
+    data['sistema_operacional'] = this.sistemaOperacional;
+    data['ram'] = this.ram;
+    data['ram_ddr'] = this.ramDdr;
+    data['hd'] = this.hd;
+    data['descricao'] = this.descricao;
+    data['estado'] = this.estado;
+    data['alienado'] = this.alienado;
+    data['comodo'] = this.comodo;
+    data['andar'] = this.andar;
+    data['predio'] = this.predio;
+    data['complexo'] = this.complexo;
+    return data;
+  }
+}
+
 class ComputadorCadastrar {
   String? tombamento;
   String? descricao;

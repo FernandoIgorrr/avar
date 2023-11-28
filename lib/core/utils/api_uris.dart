@@ -5,6 +5,12 @@ class URIsAPI {
   static const String uri_listar_patrimonios_tudo =
       "http://10.0.2.2:8080/api/patrimonio/listar";
 
+  static const String uri_listar_patrimonios_por_complexo =
+      "http://10.0.2.2:8080/api/patrimonio/listar_por_complexo";
+
+  static const String uri_listar_computadores_tudo =
+      "http://10.0.2.2:8080/api/patrimonio/computador/listar";
+
   static const String uri_estados_patrimono =
       "http://10.0.2.2:8080/api/patrimonio/estado/listar";
   static const String uri_tipos_patrimono =

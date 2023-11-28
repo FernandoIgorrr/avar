@@ -45,7 +45,10 @@ class PatrimoniosHomePage extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  ButtonIcon(text: "lbl_listar_computadores".tr),
+                  ButtonIcon(
+                    text: "lbl_listar_computadores".tr,
+                    routeName: AppRoutes.listarComputadoresTudo,
+                  ),
                   ButtonIcon(text: "lbl_alienar".tr),
                   ButtonIcon(text: "lbl_alienamentos".tr),
                 ],

@@ -41,6 +41,7 @@ final Map<String, String> ptBr = {
   "lbl_listar_por_predio": "Listar por prédio",
   "lbl_listar_por_comodo": "Listar por comodo",
   "lbl_listar_computadores": "Listar PC's",
+  "lbl_listar_pc_tudo": "Listar Todos Computadores",
 
   // LIstar_por_comodo Screen
   "lbl_localidade": "Localidade",

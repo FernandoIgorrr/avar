@@ -4,8 +4,8 @@ import 'package:avar/theme/theme_helper.dart';
 import 'package:avar/core/utils/size_utils.dart';
 import 'package:flutter/material.dart';
 
-class CustomDropDownMenu extends StatefulWidget {
-  CustomDropDownMenu({
+class CustomDropDownMenuString extends StatefulWidget {
+  CustomDropDownMenuString({
     super.key,
     required this.items,
     this.selectedItemId,
@@ -15,18 +15,19 @@ class CustomDropDownMenu extends StatefulWidget {
   });
 
   final List<Map<String, dynamic>> items;
-  int? selectedItemId;
+  String? selectedItemId;
   final TextEditingController? selectedItemIdController;
   final String? descName;
-  final ValueNotifier<int>? reloadElement;
+  final ValueNotifier<String>? reloadElement;
 
   @override
-  State<CustomDropDownMenu> createState() => _CustomDropDownMenuState(
-      items, selectedItemId, selectedItemIdController, descName, reloadElement);
+  State<CustomDropDownMenuString> createState() =>
+      _CustomDropDownMenuStringState(items, selectedItemId,
+          selectedItemIdController, descName, reloadElement);
 }
 
-class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
-  _CustomDropDownMenuState(
+class _CustomDropDownMenuStringState extends State<CustomDropDownMenuString> {
+  _CustomDropDownMenuStringState(
     this.items,
     this.selectedItemId,
     this.selectedItemIdController,
@@ -36,12 +37,13 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
 
   final List<Map<String, dynamic>> items;
   final TextEditingController? selectedItemIdController;
-  int? selectedItemId;
+  String? selectedItemId;
   final String? descName;
-  final ValueNotifier<int>? reloadElement;
+  final ValueNotifier<String>? reloadElement;
   @override
   void initState() {
-    widget.selectedItemIdController?.text = items.first['id'].toString();
+    widget.selectedItemIdController?.text =
+        items.first[descName ?? 'descricao'];
     // reloadElement?.value = ;
 
     super.initState();
@@ -58,7 +60,7 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
       ),
       child: Column(
         children: [
-          DropdownButtonFormField<int>(
+          DropdownButtonFormField<String>(
               isExpanded: true,
               alignment: Alignment.center,
               value: selectedItemId,
@@ -70,9 +72,9 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
                 ),
               ),
               items: items.map((item) {
-                return DropdownMenuItem<int>(
+                return DropdownMenuItem<String>(
                   alignment: Alignment.center,
-                  value: item['id'],
+                  value: item[descName ?? 'descricao'],
                   child: SizedBox(
                     // height: 0.adaptSize,
                     width: 200.adaptSize,
@@ -89,10 +91,10 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
                   ),
                 );
               }).toList(),
-              onChanged: (int? value) async {
+              onChanged: (String? value) async {
                 setState(() {
                   selectedItemId = value!;
-                  widget.selectedItemIdController?.text = value.toString();
+                  widget.selectedItemIdController?.text = value;
                   reloadElement?.value = value;
                 });
               },
