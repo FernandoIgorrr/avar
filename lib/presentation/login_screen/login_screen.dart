@@ -141,6 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ));
       }
     } catch (e) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor: Colors.redAccent,
         content: Text("msg_erro_de_rede".tr, textAlign: TextAlign.center),

@@ -42,21 +42,21 @@ class ButtonIcon extends StatelessWidget {
               alignment: Alignment.center,
             ),
           ),
-          SizedBox(height: 15),
+          const SizedBox(height: 15),
           SizedBox(
             // height: 0.adaptSize,
-            width: 100.adaptSize,
+            width: 100,
+            height: 25,
             child: FittedBox(
               fit: BoxFit.scaleDown,
               child: Text(
                 text ?? 'Padrao',
-                //textAlign: TextAlign.center,
-                maxLines: 3,
                 style: theme.textTheme.titleMedium!
                     .copyWith(color: appTheme.blueGray100),
               ),
             ),
           ),
+          const SizedBox(height: 15),
         ]),
       ),
     );

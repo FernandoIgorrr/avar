@@ -1,4 +1,5 @@
 import 'package:avar/theme/theme_helper.dart';
+import 'package:avar/core/utils/size_utils.dart';
 import 'package:flutter/material.dart';
 
 class CustomDropDownMenu extends StatefulWidget {
@@ -8,30 +9,35 @@ class CustomDropDownMenu extends StatefulWidget {
     this.selectedItemId,
     this.selectedItemIdController,
     this.descName,
+    this.reloadElement,
   });
 
   final List<Map<String, dynamic>> items;
   int? selectedItemId;
   final TextEditingController? selectedItemIdController;
   final String? descName;
+  final ValueNotifier<int>? reloadElement;
 
   @override
   State<CustomDropDownMenu> createState() => _CustomDropDownMenuState(
-      items, selectedItemId, selectedItemIdController, descName);
+      items, selectedItemId, selectedItemIdController, descName, reloadElement);
 }
 
 class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
   _CustomDropDownMenuState(this.items, this.selectedItemId,
-      this.selectedItemIdController, this.descName);
+      this.selectedItemIdController, this.descName, this.reloadElement);
 
   final List<Map<String, dynamic>> items;
   final TextEditingController? selectedItemIdController;
   int? selectedItemId;
   final String? descName;
+  final ValueNotifier<int>? reloadElement;
 
   @override
   void initState() {
     widget.selectedItemIdController?.text = items.first['id'].toString();
+    // reloadElement?.value = ;
+
     super.initState();
   }
 
@@ -40,9 +46,9 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
     return Padding(
       padding: const EdgeInsets.only(
         top: 0,
-        right: 70.0,
+        right: 0.0,
         bottom: 0,
-        left: 70.0,
+        left: 0.0,
       ),
       child: Column(
         children: [
@@ -59,39 +65,45 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
               ),
               items: items.map((item) {
                 return DropdownMenuItem<int>(
-                    alignment: Alignment.center,
-                    value: item['id'],
-                    child: Align(
-                      //alignment: const Alignment(0.2, 0),
+                  alignment: Alignment.center,
+                  value: item['id'],
+
+                  child: SizedBox(
+                    // height: 0.adaptSize,
+                    width: 200.adaptSize,
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
                       child: Text(
                         item[descName] ?? item['descricao'],
-                        style: TextStyle(color: appTheme.black900),
+                        //textAlign: TextAlign.center,
+                        maxLines: 3,
+                        style: theme.textTheme.titleMedium!
+                            .copyWith(color: appTheme.black900),
                       ),
-                    )
-                    // child: Text(item['descricao'],
-                    //     style: TextStyle(color: appTheme.black900)),
-                    );
+                    ),
+                  ),
+
+                  // child: Align(
+                  //   //alignment: const Alignment(0.2, 0),
+                  //   child: Text(
+                  //     item[descName] ?? item['descricao'],
+                  //     maxLines: 1,
+                  //     // style: TextStyle(color: appTheme.black900),
+                  //     style: theme.textTheme.titleMedium!
+                  //         .copyWith(color: appTheme.black900),
+                  //   ),
+                  // )
+                );
               }).toList(),
               onChanged: (int? value) async {
                 setState(() {
                   selectedItemId = value!;
                   widget.selectedItemIdController?.text = value.toString();
+                  reloadElement?.value = value;
                 });
               },
               borderRadius: BorderRadius.circular(10.0),
               dropdownColor: appTheme.blueGray100),
-          //SizedBox(height: 20),
-          // ElevatedButton(
-          //   onPressed: () {
-          //     if (selectedItemId != null) {
-          //       print('Enviando formulário com ID: $selectedItemId');
-          //       // Adicione aqui a lógica para enviar o formulário com o ID selecionado
-          //     } else {
-          //       print('Nenhum item selecionado');
-          //     }
-          //   },
-          //   child: Text('Enviar Formulário'),
-          // ),
         ],
       ),
     );

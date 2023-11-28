@@ -35,18 +35,27 @@ class PatrimoniosHomePage extends StatelessWidget {
                     text: "lbl_listar".tr,
                     routeName: AppRoutes.listarPatrimoniosHomePage,
                   ),
-                  ButtonIcon(text: "lbl_computadores".tr),
+                  ButtonIcon(
+                    text: "lbl_cadastrar_computador".tr,
+                    routeName: AppRoutes.cadastrarComputador,
+                  ),
                 ],
               ),
               const SizedBox(height: 25),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  ButtonIcon(text: "lbl_listar_computadores".tr),
                   ButtonIcon(text: "lbl_alienar".tr),
                   ButtonIcon(text: "lbl_alienamentos".tr),
-                  ButtonIcon(text: "lbl_manejos".tr),
                 ],
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ButtonIcon(text: "lbl_manejos".tr),
+                ],
+              )
             ],
           ),
         ),

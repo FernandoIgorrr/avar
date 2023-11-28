@@ -10,6 +10,16 @@ class URIsAPI {
   static const String uri_tipos_patrimono =
       "http://10.0.2.2:8080/api/patrimonio/tipo/listar";
 
+//SPECS PCS
+  static const String uri_modelos =
+      "http://10.0.2.2:8080/api/pc_specs/modelo/listar";
+  static const String uri_sistemas_operacionais =
+      "http://10.0.2.2:8080/api/pc_specs/sistema_operacional/listar";
+  static const String uri_ram = "http://10.0.2.2:8080/api/pc_specs/ram/listar";
+  static const String uri_ram_ddr =
+      "http://10.0.2.2:8080/api/pc_specs/ram_ddr/listar";
+  static const String uri_hd = "http://10.0.2.2:8080/api/pc_specs/hd/listar";
+
   //LOCALIDADES
   static const String uri_complexos =
       "http://10.0.2.2:8080/api/localidade/complexo/listar";
@@ -22,4 +32,7 @@ class URIsAPI {
 
   static const String uri_cadastrar_patrimonio =
       "http://10.0.2.2:8080/api/patrimonio/cadastrar";
+
+  static const String uri_cadastrar_computador =
+      "http://10.0.2.2:8080/api/patrimonio/computador/cadastrar";
 }

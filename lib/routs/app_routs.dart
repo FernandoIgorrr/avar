@@ -1,3 +1,4 @@
+import 'package:avar/presentation/patrimonios_home_page/cadastrar_computador_page/cadastrar_computador_page.dart';
 import 'package:avar/presentation/patrimonios_home_page/cadastrar_patrimonio_page/cadastrar_patrimonio_page.dart';
 import 'package:avar/presentation/patrimonios_home_page/listar_patrimonios_page/listar_patrimonios_page.dart';
 import 'package:avar/presentation/patrimonios_home_page/listar_patrimonios_page/listar_patrimonios_tudo.dart';
@@ -17,6 +18,7 @@ class AppRoutes {
       '/listar_patrimonios_home_page';
   static const String listarPatrimoniosTudo = 'listar_patrimonios_tudo';
   static const String cadastrarPatrimonio = 'cadastrar_patrimonio';
+  static const String cadastrarComputador = 'cadastrar_computador';
 
   static Map<String, WidgetBuilder> routes = {
     loginScreen: (context) => LoginScreen(),
@@ -26,5 +28,6 @@ class AppRoutes {
     listarPatrimoniosHomePage: (context) => ListarPatrimoniosPage(),
     listarPatrimoniosTudo: (context) => ListarPatrimoniosTudo(),
     cadastrarPatrimonio: (context) => CadastrarPatrimonioPage(),
+    cadastrarComputador: (context) => CadastrarComputadorPage(),
   };
 }

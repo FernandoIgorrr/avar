@@ -100,7 +100,6 @@ class _ListarPatrimoniosTudoState extends State<ListarPatrimoniosTudo> {
 
   Future<List<PatrimonioListar>> listarPatrimoniosTudo() async {
     String? token = await recuperarToken();
-    print('Token : ${token}');
     if (token == '' || token == null) {
       // if (!mounted) return new List<Patrimonio>();
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

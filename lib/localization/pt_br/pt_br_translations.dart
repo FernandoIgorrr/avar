@@ -28,7 +28,9 @@ final Map<String, String> ptBr = {
   "lbl_computador": "  Computador",
 
   // Cadastrar_Computador One Screen
-  "lbl_hd": "  HD", "lbl_ram": "  RAM",
+  "lbl_hd": "Armazenamento",
+  "lbl_ram": "  Memória",
+  "lbl_ram_ddr": "Classe da memória",
   "lbl_sistema_operacional": "  Sistema Operacional",
 
   // Patrimonios Screen
@@ -38,6 +40,7 @@ final Map<String, String> ptBr = {
   "lbl_listar_por_complexo": "Listar por complexo",
   "lbl_listar_por_predio": "Listar por prédio",
   "lbl_listar_por_comodo": "Listar por comodo",
+  "lbl_listar_computadores": "Listar PC's",
 
   // LIstar_por_comodo Screen
   "lbl_localidade": "Localidade",
@@ -52,8 +55,8 @@ final Map<String, String> ptBr = {
   "lbl_matr_cula": "  Matrícula", "msg_desligar_bolsista": "Desligar bolsista",
 
   // Cadastrar_bolsista Screen
-  "lbl_bolsista_s2": "  Bolsista(s)", "lbl_patrim_nio_s2": "  Patrimônio(s)",
-  "lbl_t_tulo": "  Título",
+  "lbl_bolsista_s2": "  Bolsista(s)", "lbl_patrimonio_s2": "  Patrimônio(s)",
+  "lbl_titulo": "  Título",
 
   // Common String
   "lbl_cadastrar": "Cadastrar",
@@ -61,13 +64,13 @@ final Map<String, String> ptBr = {
   "lbl_descricao": "  Descrição",
   "lbl_estado": "  Estado",
   "lbl_modelo": "  Modelo",
-  "lbl_patrim_nio": "Patrimônio",
-  "lbl_patrim_nios": "Patrimônios",
+  "lbl_patrimonio": "Patrimônio",
+  "lbl_patrimonios": "Patrimônios",
   "lbl_serial": "  Serial",
   "lbl_tipo": "  Tipo",
   "lbl_tombamento": "  Tombamento",
   "lbl_cadastrar_chamado": "Cadastrar chamado",
-  "lbl_cadastrar_computador": "Cadastrar computador",
+  "lbl_cadastrar_computador": "Cadastrar PC",
 
 // Network Error String
   "msg_erro_de_rede": "Erro na rede",
