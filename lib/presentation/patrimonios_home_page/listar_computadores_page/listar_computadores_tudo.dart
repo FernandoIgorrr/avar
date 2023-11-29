@@ -33,38 +33,30 @@ class _ListarComputadoresTudoState extends State<ListarComputadoresTudo> {
         ),
         body: Container(
           width: double.maxFinite,
+          padding: EdgeInsets.symmetric(horizontal: 15.h),
           decoration: AppDecoration.fillOnPrimary,
           child: FutureBuilder<List<ComputadorListar>>(
               future: computadores,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return ListView.separated(
-                    //padding: const EdgeInsets.all(20.0),
-
-                    shrinkWrap: true,
+                    //shrinkWrap: true,
                     itemBuilder: (context, index) {
                       ComputadorListar computador = snapshot.data![index];
                       return Container(
                         width: double.maxFinite,
-                        margin: EdgeInsets.all(10.h),
+                        margin: EdgeInsets.only(top: 15.v),
                         decoration: BoxDecoration(
                           color: appTheme.blackLight,
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         child: ExpansionTile(
-                          //expandedAlignment: Alignment.center,
-                          // title: Text(
-                          //   patrimonio.tombamento!,
-                          // ),
-                          // subtitle: Text(
-                          //     "${patrimonio.tipo!} - ${patrimonio.predio!}"),
                           title: Align(
                             alignment: const Alignment(0.2, 0),
                             child: Text(
                               computador.tombamento!,
                             ),
                           ),
-
                           subtitle: Align(
                               alignment: const Alignment(0.2, 0),
                               child: Text(

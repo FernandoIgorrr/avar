@@ -34,14 +34,20 @@ class ListarPatrimoniosPage extends StatelessWidget {
                     text: "lbl_listar_por_complexo".tr,
                     routeName: AppRoutes.listarPatrimoniosComplexo,
                   ),
-                  ButtonIcon(text: "lbl_listar_por_predio".tr),
+                  ButtonIcon(
+                    text: "lbl_listar_por_predio".tr,
+                    routeName: AppRoutes.listarPatrimoniosPredio,
+                  ),
                 ],
               ),
               SizedBox(height: 25.adaptSize),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  ButtonIcon(text: "lbl_listar_por_andar".tr),
+                  ButtonIcon(
+                    text: "lbl_listar_por_andar".tr,
+                    routeName: AppRoutes.listarPatrimoniosAndar,
+                  ),
                   ButtonIcon(text: "lbl_listar_por_comodo".tr),
                 ],
               ),

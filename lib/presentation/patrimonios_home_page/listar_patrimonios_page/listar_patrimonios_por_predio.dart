@@ -8,21 +8,23 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 // ignore_for_file: must_be_immutable
-class ListarPatrimoniosPorComplexo extends StatefulWidget {
-  const ListarPatrimoniosPorComplexo({Key? key}) : super(key: key);
+class ListarPatrimoniosPorPredio extends StatefulWidget {
+  const ListarPatrimoniosPorPredio({Key? key}) : super(key: key);
 
   @override
-  State<ListarPatrimoniosPorComplexo> createState() =>
-      _ListarPatrimonioPorComplexoState();
+  State<ListarPatrimoniosPorPredio> createState() =>
+      _ListarPatrimoniosPorPredioState();
 }
 
-class _ListarPatrimonioPorComplexoState
-    extends State<ListarPatrimoniosPorComplexo> {
+class _ListarPatrimoniosPorPredioState
+    extends State<ListarPatrimoniosPorPredio> {
   late Future<List<PatrimonioListar>> patrimonios;
 
   TextEditingController _complexoController = TextEditingController();
+  TextEditingController _predioController = TextEditingController();
 
-  ValueNotifier<String> _reloadComplexo = ValueNotifier<String>("CAMPUS");
+  ValueNotifier<int> _reloadComplexo = ValueNotifier<int>(1);
+  ValueNotifier<String> _reloadPredio = ValueNotifier<String>("CAMPUS I");
 
   @override
   void initState() {
@@ -34,7 +36,7 @@ class _ListarPatrimonioPorComplexoState
     return SafeArea(
       child: Scaffold(
         appBar: CustomAppBar(
-          title: AppbarTitle(text: "lbl_listar_tudo".tr),
+          title: AppbarTitle(text: "lbl_listar_por_predio".tr),
         ),
         body: Container(
           width: double.maxFinite,
@@ -54,13 +56,30 @@ class _ListarPatrimonioPorComplexoState
                 }
               },
             ),
+            SizedBox(height: 12.v),
+            ValueListenableBuilder<int>(
+              valueListenable: _reloadComplexo,
+              builder: (context, value, child) {
+                return FutureBuilder(
+                  future: _buildPredio(context, value),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const LinearProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return Text('Erro: ${snapshot.error}');
+                    } else {
+                      return snapshot.data ?? const SizedBox();
+                    }
+                  },
+                );
+              },
+            ),
             SizedBox(height: 15.v),
             ValueListenableBuilder<String>(
-                valueListenable: _reloadComplexo,
+                valueListenable: _reloadPredio,
                 builder: (context, value, child) {
                   return FutureBuilder<List<PatrimonioListar>>(
-                      future:
-                          listarPatrimoniosPorComplexo(_reloadComplexo.value),
+                      future: listarPatrimoniosPorPredio(_reloadPredio.value),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           return Expanded(
@@ -124,10 +143,23 @@ class _ListarPatrimonioPorComplexoState
 
   Future<Widget> _buildComplexo(BuildContext context) async {
     List<Map<String, dynamic>> items = await listarComplexos();
-    return CustomDropDownMenuString(
+    return CustomDropDownMenu(
       reloadElement: _reloadComplexo,
       descName: 'nome',
       selectedItemIdController: _complexoController,
+      items: items,
+      selectedItemId: items.first['id'],
+    );
+  }
+
+  Future<Widget> _buildPredio(BuildContext context, int value) async {
+    List<Map<String, dynamic>> items;
+    items = await listarPredios(value);
+    _reloadPredio.value = items.first['nome'];
+    return CustomDropDownMenuString(
+      reloadElement: _reloadPredio,
+      descName: 'nome',
+      selectedItemIdController: _predioController,
       items: items,
       selectedItemId: items.first['nome'],
     );
@@ -164,8 +196,42 @@ class _ListarPatrimonioPorComplexoState
     }
   }
 
-  Future<List<PatrimonioListar>> listarPatrimoniosPorComplexo(
-      String complexo) async {
+  Future<List<Map<String, dynamic>>> listarPredios(int complexo) async {
+    String? token = await recuperarToken();
+    if (token == '' || token == null) {
+      // if (!mounted) return new List<Patrimonio>();
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: Colors.redAccent,
+        content: Text("msg_erro_autorizacao".tr, textAlign: TextAlign.center),
+        behavior: SnackBarBehavior.floating,
+        duration: const Duration(seconds: 5),
+      ));
+      throw Exception("msg_erro_autorizacao".tr);
+    } else {
+      final params = {'complexo': '$complexo'};
+      var url = Uri.parse(
+        URIsAPI.uri_predios,
+      );
+      final urlWithParams = Uri.http(url.authority, url.path, params);
+      var response = await http.get(urlWithParams, headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': token
+      });
+      if (response.statusCode == 200) {
+        List predios0 = jsonDecode(utf8.decode(response.bodyBytes));
+
+        var predios = predios0.map((json) => Predio.fromJson(json)).toList();
+        return Predio.convertListToMapList(predios);
+      } else {
+        throw Exception();
+      }
+    }
+  }
+
+  Future<List<PatrimonioListar>> listarPatrimoniosPorPredio(
+      String predio) async {
     String? token = await recuperarToken();
     if (token == '' || token == null) {
       // if (!mounted) return new List<Patrimonio>();
@@ -177,8 +243,8 @@ class _ListarPatrimonioPorComplexoState
       ));
       throw Exception("msg_erro_autorizacao".tr);
     } else {
-      final params = {'complexo': complexo};
-      var url = Uri.parse(URIsAPI.uri_listar_patrimonios_por_complexo);
+      final params = {'predio': predio};
+      var url = Uri.parse(URIsAPI.uri_listar_patrimonios_por_predio);
       final urlWithParams = Uri.http(url.authority, url.path, params);
 
       print(urlWithParams);
