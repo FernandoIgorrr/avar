@@ -36,6 +36,7 @@ final Map<String, String> ptBr = {
   // Patrimonios Screen
   "lbl_listar_tudo": "Listar tudo",
   "lbl_listar_patrimonios": "Listar patrimônios",
+  "lbl_listar_por_tipo": "Listar por tipo",
   "lbl_listar_por_andar": "Listar por Andar",
   "lbl_listar_por_complexo": "Listar por complexo",
   "lbl_listar_por_predio": "Listar por prédio",

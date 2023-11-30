@@ -8,23 +8,20 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 // ignore_for_file: must_be_immutable
-class ListarPatrimoniosPorPredio extends StatefulWidget {
-  const ListarPatrimoniosPorPredio({Key? key}) : super(key: key);
+class ListarPatrimoniosPorTipo extends StatefulWidget {
+  const ListarPatrimoniosPorTipo({Key? key}) : super(key: key);
 
   @override
-  State<ListarPatrimoniosPorPredio> createState() =>
-      _ListarPatrimoniosPorPredioState();
+  State<ListarPatrimoniosPorTipo> createState() =>
+      _ListarPatrimoniosPorTipoState();
 }
 
-class _ListarPatrimoniosPorPredioState
-    extends State<ListarPatrimoniosPorPredio> {
+class _ListarPatrimoniosPorTipoState extends State<ListarPatrimoniosPorTipo> {
   late Future<List<PatrimonioListar>> patrimonios;
 
-  TextEditingController _complexoController = TextEditingController();
-  TextEditingController _predioController = TextEditingController();
+  TextEditingController _tipoController = TextEditingController();
 
-  ValueNotifier<int> _reloadComplexo = ValueNotifier<int>(1);
-  ValueNotifier<String> _reloadPredio = ValueNotifier<String>("CAMPUS I");
+  ValueNotifier<String> _reloadTipo = ValueNotifier<String>("Cadeira");
 
   @override
   void initState() {
@@ -36,7 +33,7 @@ class _ListarPatrimoniosPorPredioState
     return SafeArea(
       child: Scaffold(
         appBar: CustomAppBar(
-          title: AppbarTitle(text: "lbl_listar_por_predio".tr),
+          title: AppbarTitle(text: "lbl_listar_por_tipo".tr),
         ),
         body: Container(
           width: double.maxFinite,
@@ -49,13 +46,13 @@ class _ListarPatrimoniosPorPredioState
                     EdgeInsets.symmetric(vertical: 0.v, horizontal: 0.h),
                 title: Align(
                   alignment: const Alignment(0.2, 0),
-                  child: Text("lbl_localidade".tr),
+                  child: Text("lbl_tipo".tr),
                 ),
                 children: [
                   Column(children: [
                     SizedBox(height: 15.v),
                     FutureBuilder<Widget>(
-                      future: _buildComplexo(context),
+                      future: _buildTipos(context),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
@@ -67,33 +64,14 @@ class _ListarPatrimoniosPorPredioState
                         }
                       },
                     ),
-                    SizedBox(height: 12.v),
-                    ValueListenableBuilder<int>(
-                      valueListenable: _reloadComplexo,
-                      builder: (context, value, child) {
-                        return FutureBuilder(
-                          future: _buildPredio(context, value),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const LinearProgressIndicator();
-                            } else if (snapshot.hasError) {
-                              return Text('Erro: ${snapshot.error}');
-                            } else {
-                              return snapshot.data ?? const SizedBox();
-                            }
-                          },
-                        );
-                      },
-                    ),
                     SizedBox(height: 15.v),
                   ]),
                 ]),
             ValueListenableBuilder<String>(
-                valueListenable: _reloadPredio,
+                valueListenable: _reloadTipo,
                 builder: (context, value, child) {
                   return FutureBuilder<List<PatrimonioListar>>(
-                      future: listarPatrimoniosPorPredio(_reloadPredio.value),
+                      future: listarPatrimoniosPorTipo(_reloadTipo.value),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           return Expanded(
@@ -155,33 +133,20 @@ class _ListarPatrimoniosPorPredioState
     );
   }
 
-  Future<Widget> _buildComplexo(BuildContext context) async {
-    List<Map<String, dynamic>> items = await listarComplexos();
-    return CustomDropDownMenu(
-      reloadElement: _reloadComplexo,
-      descName: 'nome',
-      selectedItemIdController: _complexoController,
-      items: items,
-      selectedItemId: items.first['id'],
-    );
-  }
-
-  Future<Widget> _buildPredio(BuildContext context, int value) async {
-    List<Map<String, dynamic>> items;
-    items = await listarPredios(value);
-    _reloadPredio.value = items.first['nome'];
+  Future<Widget> _buildTipos(BuildContext context) async {
+    List<Map<String, dynamic>> items = await listarTiposPatrimonio();
     return CustomDropDownMenuString(
-      reloadElement: _reloadPredio,
-      descName: 'nome',
-      selectedItemIdController: _predioController,
+      reloadElement: _reloadTipo,
+      selectedItemIdController: _tipoController,
       items: items,
-      selectedItemId: items.first['nome'],
+      selectedItemId: items.first['descricao'],
     );
   }
 
-  Future<List<Map<String, dynamic>>> listarComplexos() async {
+  Future<List<Map<String, dynamic>>> listarTiposPatrimonio() async {
     String? token = await recuperarToken();
     if (token == '' || token == null) {
+      // if (!mounted) return new List<Patrimonio>();
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor: Colors.redAccent,
@@ -191,7 +156,7 @@ class _ListarPatrimoniosPorPredioState
       ));
       throw Exception("msg_erro_autorizacao".tr);
     } else {
-      var url = Uri.parse(URIsAPI.uri_complexos);
+      var url = Uri.parse(URIsAPI.uri_tipos_patrimono);
 
       var response = await http.get(url, headers: {
         'Content-Type': 'application/json',
@@ -199,21 +164,21 @@ class _ListarPatrimoniosPorPredioState
         'Authorization': token
       });
       if (response.statusCode == 200) {
-        List complexos0 = jsonDecode(utf8.decode(response.bodyBytes));
+        List tiposPatrimonio0 = jsonDecode(utf8.decode(response.bodyBytes));
 
-        var complexos =
-            complexos0.map((json) => Complexo.fromJson(json)).toList();
-        return Complexo.convertListToMapList(complexos);
+        var tiposPatrimonio = tiposPatrimonio0
+            .map((json) => TipoPatrimonio.fromJson(json))
+            .toList();
+        return TipoPatrimonio.convertListToMapList(tiposPatrimonio);
       } else {
         throw Exception("msg_erro_autorizacao".tr);
       }
     }
   }
 
-  Future<List<Map<String, dynamic>>> listarPredios(int complexo) async {
+  Future<List<PatrimonioListar>> listarPatrimoniosPorTipo(String tipo) async {
     String? token = await recuperarToken();
     if (token == '' || token == null) {
-      // if (!mounted) return new List<Patrimonio>();
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor: Colors.redAccent,
@@ -223,42 +188,8 @@ class _ListarPatrimoniosPorPredioState
       ));
       throw Exception("msg_erro_autorizacao".tr);
     } else {
-      final params = {'complexo': '$complexo'};
-      var url = Uri.parse(
-        URIsAPI.uri_predios,
-      );
-      final urlWithParams = Uri.http(url.authority, url.path, params);
-      var response = await http.get(urlWithParams, headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': token
-      });
-      if (response.statusCode == 200) {
-        List predios0 = jsonDecode(utf8.decode(response.bodyBytes));
-
-        var predios = predios0.map((json) => Predio.fromJson(json)).toList();
-        return Predio.convertListToMapList(predios);
-      } else {
-        throw Exception();
-      }
-    }
-  }
-
-  Future<List<PatrimonioListar>> listarPatrimoniosPorPredio(
-      String predio) async {
-    String? token = await recuperarToken();
-    if (token == '' || token == null) {
-      // if (!mounted) return new List<Patrimonio>();
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        backgroundColor: Colors.redAccent,
-        content: Text("msg_erro_autorizacao".tr, textAlign: TextAlign.center),
-        behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 5),
-      ));
-      throw Exception("msg_erro_autorizacao".tr);
-    } else {
-      final params = {'predio': predio};
-      var url = Uri.parse(URIsAPI.uri_listar_patrimonios_por_predio);
+      final params = {'tipo': tipo};
+      var url = Uri.parse(URIsAPI.uri_listar_patrimonios_por_tipo);
       final urlWithParams = Uri.http(url.authority, url.path, params);
 
       print(urlWithParams);

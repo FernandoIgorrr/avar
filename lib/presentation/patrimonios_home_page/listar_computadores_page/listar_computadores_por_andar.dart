@@ -8,27 +8,25 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 // ignore_for_file: must_be_immutable
-class ListarPatrimoniosPorComodo extends StatefulWidget {
-  const ListarPatrimoniosPorComodo({Key? key}) : super(key: key);
+class ListarComputadoresPorAndar extends StatefulWidget {
+  const ListarComputadoresPorAndar({Key? key}) : super(key: key);
 
   @override
-  State<ListarPatrimoniosPorComodo> createState() =>
-      _ListarPatrimoniosPorComodoState();
+  State<ListarComputadoresPorAndar> createState() =>
+      _ListarComputadoresPorAndarState();
 }
 
-class _ListarPatrimoniosPorComodoState
-    extends State<ListarPatrimoniosPorComodo> {
+class _ListarComputadoresPorAndarState
+    extends State<ListarComputadoresPorAndar> {
   late Future<List<PatrimonioListar>> patrimonios;
 
   TextEditingController _complexoController = TextEditingController();
   TextEditingController _predioController = TextEditingController();
   TextEditingController _andarController = TextEditingController();
-  TextEditingController _comodoController = TextEditingController();
 
   ValueNotifier<int> _reloadComplexo = ValueNotifier<int>(1);
   ValueNotifier<int> _reloadPredio = ValueNotifier<int>(1);
   ValueNotifier<int> _reloadAndar = ValueNotifier<int>(1);
-  ValueNotifier<int> _reloadComodo = ValueNotifier<int>(1);
 
   @override
   void initState() {
@@ -40,7 +38,7 @@ class _ListarPatrimoniosPorComodoState
     return SafeArea(
       child: Scaffold(
         appBar: CustomAppBar(
-          title: AppbarTitle(text: "lbl_listar_por_comodo".tr),
+          title: AppbarTitle(text: "lbl_listar_por_andar".tr),
         ),
         body: Container(
           width: double.maxFinite,
@@ -109,33 +107,14 @@ class _ListarPatrimoniosPorComodoState
                         );
                       },
                     ),
-                    SizedBox(height: 12.v),
-                    ValueListenableBuilder<int>(
-                      valueListenable: _reloadAndar,
-                      builder: (context, value, child) {
-                        return FutureBuilder(
-                          future: _buildComodo(context, value),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const LinearProgressIndicator();
-                            } else if (snapshot.hasError) {
-                              return Text('Erro: ${snapshot.error}');
-                            } else {
-                              return snapshot.data ?? const SizedBox();
-                            }
-                          },
-                        );
-                      },
-                    ),
-                    SizedBox(height: 15.v),
                   ]),
                 ]),
+            SizedBox(height: 15.v),
             ValueListenableBuilder<int>(
-                valueListenable: _reloadComodo,
+                valueListenable: _reloadAndar,
                 builder: (context, value, child) {
                   return FutureBuilder<List<PatrimonioListar>>(
-                      future: listarPatrimoniosPorComodo(),
+                      future: listarPatrimoniosPorAndar(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           return Expanded(
@@ -235,19 +214,6 @@ class _ListarPatrimoniosPorComodoState
     );
   }
 
-  Future<Widget> _buildComodo(BuildContext context, int value) async {
-    List<Map<String, dynamic>> items;
-    items = await listarComodos(value);
-    _reloadComodo.value = items.first['id'];
-    return CustomDropDownMenu(
-      reloadElement: _reloadComodo,
-      descName: 'nome',
-      selectedItemIdController: _comodoController,
-      items: items,
-      selectedItemId: items.first['id'],
-    );
-  }
-
   Future<String> _getPredioName() async {
     List<Map<String, dynamic>> items;
     items = await listarPredios(_reloadComplexo.value);
@@ -271,20 +237,6 @@ class _ListarPatrimoniosPorComodoState
         nome = item['nome'];
       }
     }
-    return nome;
-  }
-
-  Future<String> _getComodoName() async {
-    List<Map<String, dynamic>> items;
-    items = await listarComodos(_reloadAndar.value);
-    String nome = "";
-    for (var item in items) {
-      if (item['id'] == _reloadComodo.value) {
-        // ignore: void_checks
-        nome = item['nome'];
-      }
-    }
-    print("NOME $nome");
     return nome;
   }
 
@@ -387,41 +339,9 @@ class _ListarPatrimoniosPorComodoState
     }
   }
 
-  Future<List<Map<String, dynamic>>> listarComodos(int andar) async {
-    String? token = await recuperarToken();
-    if (token == '' || token == null) {
-      // if (!mounted) return new List<Patrimonio>();
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        backgroundColor: Colors.redAccent,
-        content: Text("msg_erro_autorizacao".tr, textAlign: TextAlign.center),
-        behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 5),
-      ));
-      throw Exception("msg_erro_autorizacao".tr);
-    } else {
-      final params = {'andar': '$andar'};
-      var url = Uri.parse(
-        URIsAPI.uri_comodos,
-      );
-      final urlWithParams = Uri.http(url.authority, url.path, params);
-      var response = await http.get(urlWithParams, headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': token
-      });
-      if (response.statusCode == 200) {
-        List comodos0 = jsonDecode(utf8.decode(response.bodyBytes));
-
-        var comodos = comodos0.map((json) => Comodo.fromJson(json)).toList();
-        return Comodo.convertListToMapList(comodos);
-      } else {
-        throw Exception("msg_erro_autorizacao".tr);
-      }
-    }
-  }
-
-  Future<List<PatrimonioListar>> listarPatrimoniosPorComodo() async {
+  Future<List<PatrimonioListar>> listarPatrimoniosPorAndar() async {
+    print(
+        "PREDIO: ${_reloadPredio.value} | ANDAR: ${_reloadAndar.value} \n\n\n\n");
     String? token = await recuperarToken();
     if (token == '' || token == null) {
       // ignore: use_build_context_synchronously
@@ -435,10 +355,9 @@ class _ListarPatrimoniosPorComodoState
     } else {
       final params = {
         'predio': await _getPredioName(),
-        'andar': await _getAndarName(),
-        'comodo': await _getComodoName(),
+        'andar': await _getAndarName()
       };
-      var url = Uri.parse(URIsAPI.uri_listar_patrimonios_por_comodo);
+      var url = Uri.parse(URIsAPI.uri_listar_patrimonios_por_andar);
       final urlWithParams = Uri.http(url.authority, url.path, params);
 
       print(urlWithParams);

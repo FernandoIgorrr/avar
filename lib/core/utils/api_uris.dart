@@ -5,6 +5,9 @@ class URIsAPI {
   static const String uri_listar_patrimonios_tudo =
       "http://10.0.2.2:8080/api/patrimonio/listar";
 
+  static const String uri_listar_patrimonios_por_tipo =
+      "http://10.0.2.2:8080/api/patrimonio/listar_por_tipo";
+
   static const String uri_listar_patrimonios_por_complexo =
       "http://10.0.2.2:8080/api/patrimonio/listar_por_complexo";
 
@@ -24,6 +27,17 @@ class URIsAPI {
       "http://10.0.2.2:8080/api/patrimonio/estado/listar";
   static const String uri_tipos_patrimono =
       "http://10.0.2.2:8080/api/patrimonio/tipo/listar";
+
+// COMPUTADORES
+
+  static const String uri_listar_computadores_por_complexo =
+      "http://10.0.2.2:8080/api/patrimonio/computador/listar_por_complexo";
+
+  static const String uri_listar_computadores_por_predio =
+      "http://10.0.2.2:8080/api/patrimonio/computador/listar_por_predio";
+
+  static const String uri_listar_computadoress_por_andar =
+      "http://10.0.2.2:8080/api/patrimonio/computador/listar_por_andar";
 
 //SPECS PCS
   static const String uri_modelos =

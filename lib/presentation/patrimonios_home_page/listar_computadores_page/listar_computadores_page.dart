@@ -30,16 +30,24 @@ class ListarComputadoresPage extends StatelessWidget {
                   ButtonIcon(
                       text: "lbl_listar_pc_tudo".tr,
                       routeName: AppRoutes.listarComputadoresTudo),
-                  ButtonIcon(text: "lbl_listar_por_complexo".tr),
-                  ButtonIcon(text: "lbl_listar_por_predio".tr),
+                  ButtonIcon(
+                    text: "lbl_listar_por_complexo".tr,
+                    routeName: AppRoutes.listarComputadoresComplexo,
+                  ),
+                  ButtonIcon(
+                    text: "lbl_listar_por_predio".tr,
+                    routeName: AppRoutes.listarComputadoresPredio,
+                  ),
                 ],
               ),
               SizedBox(height: 25.adaptSize),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  ButtonIcon(text: "lbl_listar_por_andar".tr),
-                  ButtonIcon(text: "lbl_listar_por_comodo".tr),
+                  ButtonIcon(
+                    text: "lbl_listar_por_andar".tr,
+                    routeName: AppRoutes.listarComputadoresAndar,
+                  ),
                 ],
               ),
             ],

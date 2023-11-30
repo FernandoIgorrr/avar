@@ -47,7 +47,7 @@ class PatrimoniosHomePage extends StatelessWidget {
                 children: [
                   ButtonIcon(
                     text: "lbl_listar_computadores".tr,
-                    routeName: AppRoutes.listarComputadoresTudo,
+                    routeName: AppRoutes.listarComputadoresHomePage,
                   ),
                   ButtonIcon(text: "lbl_alienar".tr),
                   ButtonIcon(text: "lbl_alienamentos".tr),

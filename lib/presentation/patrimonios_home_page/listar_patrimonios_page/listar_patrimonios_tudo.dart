@@ -51,19 +51,12 @@ class _ListarPatrimoniosTudoState extends State<ListarPatrimoniosTudo> {
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         child: ExpansionTile(
-                          //expandedAlignment: Alignment.center,
-                          // title: Text(
-                          //   patrimonio.tombamento!,
-                          // ),
-                          // subtitle: Text(
-                          //     "${patrimonio.tipo!} - ${patrimonio.predio!}"),
                           title: Align(
                             alignment: const Alignment(0.2, 0),
                             child: Text(
                               patrimonio.tombamento!,
                             ),
                           ),
-
                           subtitle: Align(
                               alignment: const Alignment(0.2, 0),
                               child: Text(

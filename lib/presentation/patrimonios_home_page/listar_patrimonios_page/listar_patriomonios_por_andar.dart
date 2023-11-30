@@ -44,55 +44,70 @@ class _ListarPatrimoniosPorAndarState extends State<ListarPatrimoniosPorAndar> {
           padding: EdgeInsets.symmetric(horizontal: 15.h),
           decoration: AppDecoration.fillOnPrimary,
           child: Column(children: [
-            SizedBox(height: 15.v),
-            FutureBuilder<Widget>(
-              future: _buildComplexo(context),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const LinearProgressIndicator();
-                } else if (snapshot.hasError) {
-                  return Text('Erro: ${snapshot.error}');
-                } else {
-                  return snapshot.data ?? const SizedBox();
-                }
-              },
-            ),
-            SizedBox(height: 12.v),
-            ValueListenableBuilder<int>(
-              valueListenable: _reloadComplexo,
-              builder: (context, value, child) {
-                return FutureBuilder(
-                  future: _buildPredio(context, value),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const LinearProgressIndicator();
-                    } else if (snapshot.hasError) {
-                      return Text('Erro: ${snapshot.error}');
-                    } else {
-                      return snapshot.data ?? const SizedBox();
-                    }
-                  },
-                );
-              },
-            ),
-            SizedBox(height: 12.v),
-            ValueListenableBuilder<int>(
-              valueListenable: _reloadPredio,
-              builder: (context, value, child) {
-                return FutureBuilder(
-                  future: _buildAndar(context, value),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const LinearProgressIndicator();
-                    } else if (snapshot.hasError) {
-                      return Text('Erro: ${snapshot.error}');
-                    } else {
-                      return snapshot.data ?? const SizedBox();
-                    }
-                  },
-                );
-              },
-            ),
+            ExpansionTile(
+                collapsedIconColor: appTheme.blueGray100,
+                tilePadding:
+                    EdgeInsets.symmetric(vertical: 0.v, horizontal: 0.h),
+                title: Align(
+                  alignment: const Alignment(0.2, 0),
+                  child: Text("lbl_localidade".tr),
+                ),
+                children: [
+                  Column(children: [
+                    SizedBox(height: 15.v),
+                    FutureBuilder<Widget>(
+                      future: _buildComplexo(context),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const LinearProgressIndicator();
+                        } else if (snapshot.hasError) {
+                          return Text('Erro: ${snapshot.error}');
+                        } else {
+                          return snapshot.data ?? const SizedBox();
+                        }
+                      },
+                    ),
+                    SizedBox(height: 12.v),
+                    ValueListenableBuilder<int>(
+                      valueListenable: _reloadComplexo,
+                      builder: (context, value, child) {
+                        return FutureBuilder(
+                          future: _buildPredio(context, value),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const LinearProgressIndicator();
+                            } else if (snapshot.hasError) {
+                              return Text('Erro: ${snapshot.error}');
+                            } else {
+                              return snapshot.data ?? const SizedBox();
+                            }
+                          },
+                        );
+                      },
+                    ),
+                    SizedBox(height: 12.v),
+                    ValueListenableBuilder<int>(
+                      valueListenable: _reloadPredio,
+                      builder: (context, value, child) {
+                        return FutureBuilder(
+                          future: _buildAndar(context, value),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const LinearProgressIndicator();
+                            } else if (snapshot.hasError) {
+                              return Text('Erro: ${snapshot.error}');
+                            } else {
+                              return snapshot.data ?? const SizedBox();
+                            }
+                          },
+                        );
+                      },
+                    ),
+                  ]),
+                ]),
             SizedBox(height: 15.v),
             ValueListenableBuilder<int>(
                 valueListenable: _reloadAndar,
