@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:avar/theme/theme_helper.dart';
 import 'package:avar/core/utils/size_utils.dart';
 import 'package:flutter/material.dart';
@@ -42,8 +40,6 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
   @override
   void initState() {
     widget.selectedItemIdController?.text = items.first['id'].toString();
-    // reloadElement?.value = ;
-
     super.initState();
   }
 

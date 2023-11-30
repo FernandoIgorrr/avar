@@ -48,7 +48,10 @@ class ListarPatrimoniosPage extends StatelessWidget {
                     text: "lbl_listar_por_andar".tr,
                     routeName: AppRoutes.listarPatrimoniosAndar,
                   ),
-                  ButtonIcon(text: "lbl_listar_por_comodo".tr),
+                  ButtonIcon(
+                    text: "lbl_listar_por_comodo".tr,
+                    routeName: AppRoutes.listarPatrimoniosComodo,
+                  ),
                 ],
               ),
             ],

@@ -2,6 +2,7 @@ import 'package:avar/presentation/patrimonios_home_page/cadastrar_computador_pag
 import 'package:avar/presentation/patrimonios_home_page/cadastrar_patrimonio_page/cadastrar_patrimonio_page.dart';
 import 'package:avar/presentation/patrimonios_home_page/listar_computadores_page/listar_computadores_tudo.dart';
 import 'package:avar/presentation/patrimonios_home_page/listar_patrimonios_page/listar_patrimonios_page.dart';
+import 'package:avar/presentation/patrimonios_home_page/listar_patrimonios_page/listar_patrimonios_por_comodo.dart';
 import 'package:avar/presentation/patrimonios_home_page/listar_patrimonios_page/listar_patrimonios_por_complexo.dart';
 import 'package:avar/presentation/patrimonios_home_page/listar_patrimonios_page/listar_patrimonios_por_predio.dart';
 import 'package:avar/presentation/patrimonios_home_page/listar_patrimonios_page/listar_patrimonios_tudo.dart';
@@ -39,6 +40,7 @@ class AppRoutes {
     listarPatrimoniosComplexo: (context) => ListarPatrimoniosPorComplexo(),
     listarPatrimoniosPredio: (context) => ListarPatrimoniosPorPredio(),
     listarPatrimoniosAndar: (context) => ListarPatrimoniosPorAndar(),
+    listarPatrimoniosComodo: (context) => ListarPatrimoniosPorComodo(),
     listarComputadoresTudo: (context) => ListarComputadoresTudo(),
     cadastrarPatrimonio: (context) => CadastrarPatrimonioPage(),
     cadastrarComputador: (context) => CadastrarComputadorPage(),

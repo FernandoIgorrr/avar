@@ -25,7 +25,7 @@ class _ListarPatrimoniosPorAndarState extends State<ListarPatrimoniosPorAndar> {
 
   ValueNotifier<int> _reloadComplexo = ValueNotifier<int>(1);
   ValueNotifier<int> _reloadPredio = ValueNotifier<int>(1);
-  ValueNotifier<String> _reloadAndar = ValueNotifier<String>("PISO I");
+  ValueNotifier<int> _reloadAndar = ValueNotifier<int>(1);
 
   @override
   void initState() {
@@ -94,12 +94,11 @@ class _ListarPatrimoniosPorAndarState extends State<ListarPatrimoniosPorAndar> {
               },
             ),
             SizedBox(height: 15.v),
-            ValueListenableBuilder<String>(
+            ValueListenableBuilder<int>(
                 valueListenable: _reloadAndar,
                 builder: (context, value, child) {
                   return FutureBuilder<List<PatrimonioListar>>(
-                      future: listarPatrimoniosPorAndar(
-                          _predioController.text, _reloadAndar.value),
+                      future: listarPatrimoniosPorAndar(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           return Expanded(
@@ -163,6 +162,7 @@ class _ListarPatrimoniosPorAndarState extends State<ListarPatrimoniosPorAndar> {
 
   Future<Widget> _buildComplexo(BuildContext context) async {
     List<Map<String, dynamic>> items = await listarComplexos();
+    _reloadComplexo.value = items.first['id'];
     return CustomDropDownMenu(
       reloadElement: _reloadComplexo,
       descName: 'nome',
@@ -176,7 +176,6 @@ class _ListarPatrimoniosPorAndarState extends State<ListarPatrimoniosPorAndar> {
     List<Map<String, dynamic>> items;
     items = await listarPredios(value);
     _reloadPredio.value = items.first['id'];
-
     return CustomDropDownMenu(
       reloadElement: _reloadPredio,
       descName: 'nome',
@@ -186,30 +185,43 @@ class _ListarPatrimoniosPorAndarState extends State<ListarPatrimoniosPorAndar> {
     );
   }
 
-  Future<String> _getPredioName(int value) async {
-    print("VALUE: $value");
-    List<Map<String, dynamic>> items;
-    items = await listarPredios(value);
-    items.forEach((item) {
-      if (item['id'] == value) {
-        // ignore: void_checks
-        return item['nome'];
-      }
-    });
-    return '';
-  }
-
   Future<Widget> _buildAndar(BuildContext context, int value) async {
     List<Map<String, dynamic>> items;
     items = await listarAndares(value);
-    _reloadAndar.value = items.first['nome'];
-    return CustomDropDownMenuString(
+    _reloadAndar.value = items.first['id'];
+    return CustomDropDownMenu(
       reloadElement: _reloadAndar,
       descName: 'nome',
       selectedItemIdController: _andarController,
       items: items,
-      selectedItemId: items.first['nome'],
+      selectedItemId: items.first['id'],
     );
+  }
+
+  Future<String> _getPredioName() async {
+    List<Map<String, dynamic>> items;
+    items = await listarPredios(_reloadComplexo.value);
+    String nome = "";
+    for (var item in items) {
+      if (item['id'] == _reloadPredio.value) {
+        // ignore: void_checks
+        nome = item['nome'];
+      }
+    }
+    return nome;
+  }
+
+  Future<String> _getAndarName() async {
+    List<Map<String, dynamic>> items;
+    items = await listarAndares(_reloadPredio.value);
+    String nome = "";
+    for (var item in items) {
+      if (item['id'] == _reloadAndar.value) {
+        // ignore: void_checks
+        nome = item['nome'];
+      }
+    }
+    return nome;
   }
 
   Future<List<Map<String, dynamic>>> listarComplexos() async {
@@ -311,8 +323,9 @@ class _ListarPatrimoniosPorAndarState extends State<ListarPatrimoniosPorAndar> {
     }
   }
 
-  Future<List<PatrimonioListar>> listarPatrimoniosPorAndar(
-      String predio, String andar) async {
+  Future<List<PatrimonioListar>> listarPatrimoniosPorAndar() async {
+    print(
+        "PREDIO: ${_reloadPredio.value} | ANDAR: ${_reloadAndar.value} \n\n\n\n");
     String? token = await recuperarToken();
     if (token == '' || token == null) {
       // ignore: use_build_context_synchronously
@@ -324,8 +337,10 @@ class _ListarPatrimoniosPorAndarState extends State<ListarPatrimoniosPorAndar> {
       ));
       throw Exception("msg_erro_autorizacao".tr);
     } else {
-      String predio0 = await _getPredioName(int.parse(predio));
-      final params = {'predio': predio0, 'andar': andar};
+      final params = {
+        'predio': await _getPredioName(),
+        'andar': await _getAndarName()
+      };
       var url = Uri.parse(URIsAPI.uri_listar_patrimonios_por_andar);
       final urlWithParams = Uri.http(url.authority, url.path, params);
 
