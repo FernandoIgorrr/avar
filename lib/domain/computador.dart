@@ -1,4 +1,9 @@
-class ComputadorListar {
+import 'package:avar/domain/connection.dart';
+import 'package:flutter/material.dart';
+import 'package:avar/core/app_export.dart';
+import 'dart:convert';
+
+class ComputadorListar extends Connection {
   String? id;
   String? tombamento;
   String? serial;
@@ -30,7 +35,8 @@ class ComputadorListar {
       this.comodo,
       this.andar,
       this.predio,
-      this.complexo});
+      this.complexo})
+      : super();
 
   ComputadorListar.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -68,6 +74,21 @@ class ComputadorListar {
     data['predio'] = this.predio;
     data['complexo'] = this.complexo;
     return data;
+  }
+
+  Future<List<ComputadorListar>> listarComputadoresTudo(
+      BuildContext context) async {
+    var response =
+        await getHttp(montaURL(URIsAPI.uri_listar_computadores_tudo, null));
+
+    if (response.statusCode == 200) {
+      List listaComputadores = jsonDecode(utf8.decode(response.bodyBytes));
+      return listaComputadores
+          .map((json) => ComputadorListar.fromJson(json))
+          .toList();
+    } else {
+      throw Exception("msg_erro_autorizacao".tr);
+    }
   }
 }
 

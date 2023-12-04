@@ -1,11 +1,7 @@
 import 'package:avar/core/app_export.dart';
 import 'package:avar/domain/computador.dart';
-import 'package:avar/domain/patrimonio.dart';
 import 'package:avar/widgets/custom_bottom_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 
 // ignore_for_file: must_be_immutable
 class ListarComputadoresTudo extends StatefulWidget {
@@ -17,11 +13,13 @@ class ListarComputadoresTudo extends StatefulWidget {
 
 class _ListarComputadoresTudoState extends State<ListarComputadoresTudo> {
   late Future<List<ComputadorListar>> computadores;
+  late ComputadorListar computador;
 
   @override
   void initState() {
     super.initState();
-    computadores = listarComputadoresTudo();
+    computador = ComputadorListar();
+    computadores = computador.listarComputadoresTudo(context);
   }
 
   @override
@@ -94,41 +92,5 @@ class _ListarComputadoresTudoState extends State<ListarComputadoresTudo> {
         bottomNavigationBar: CustomBottomBar(),
       ),
     );
-  }
-
-  Future<List<ComputadorListar>> listarComputadoresTudo() async {
-    String? token = await recuperarToken();
-    if (token == '' || token == null) {
-      // if (!mounted) return new List<Patrimonio>();
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        backgroundColor: Colors.redAccent,
-        content: Text("msg_erro_autorizacao".tr, textAlign: TextAlign.center),
-        behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 5),
-      ));
-      throw Exception("msg_erro_autorizacao".tr);
-    } else {
-      var url = Uri.parse(URIsAPI.uri_listar_computadores_tudo);
-
-      var response = await http.get(url, headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': token
-      });
-
-      if (response.statusCode == 200) {
-        List listaComputadores = jsonDecode(utf8.decode(response.bodyBytes));
-        return listaComputadores
-            .map((json) => ComputadorListar.fromJson(json))
-            .toList();
-      } else {
-        throw Exception("msg_erro_autorizacao".tr);
-      }
-    }
-  }
-
-  Future<String?> recuperarToken() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('token');
   }
 }

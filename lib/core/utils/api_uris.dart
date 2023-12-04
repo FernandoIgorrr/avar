@@ -1,3 +1,5 @@
+import 'package:avar/domain/usuario.dart';
+
 class URIsAPI {
   // Login
   static const String uri_login = "http://10.0.2.2:8080/api/auth/login";

@@ -253,7 +253,7 @@ class _ListarComputadoresPorPredioState
       String predio) async {
     String? token = await recuperarToken();
     if (token == '' || token == null) {
-      // if (!mounted) return new List<Patrimonio>();
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor: Colors.redAccent,
         content: Text("msg_erro_autorizacao".tr, textAlign: TextAlign.center),

@@ -104,12 +104,12 @@ class _ListarPatrimoniosTudoState extends State<ListarPatrimoniosTudo> {
       throw Exception("msg_erro_autorizacao".tr);
     } else {
       var url = Uri.parse(URIsAPI.uri_listar_patrimonios_tudo);
-
-      var response = await http.get(url, headers: {
+      var headers = {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'Authorization': token
-      });
+      };
+      var response = await http.get(url, headers: headers);
 
       if (response.statusCode == 200) {
         List listaPatrimonios = jsonDecode(utf8.decode(response.bodyBytes));

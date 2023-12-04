@@ -359,8 +359,6 @@ class _ListarComputadoresPorAndarState
       };
       var url = Uri.parse(URIsAPI.uri_listar_patrimonios_por_andar);
       final urlWithParams = Uri.http(url.authority, url.path, params);
-
-      print(urlWithParams);
       var response = await http.get(urlWithParams, headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
