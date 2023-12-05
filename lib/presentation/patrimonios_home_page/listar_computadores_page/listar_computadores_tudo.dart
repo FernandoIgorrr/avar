@@ -12,14 +12,12 @@ class ListarComputadoresTudo extends StatefulWidget {
 }
 
 class _ListarComputadoresTudoState extends State<ListarComputadoresTudo> {
-  late Future<List<ComputadorListar>> computadores;
   late ComputadorListar computador;
 
   @override
   void initState() {
     super.initState();
     computador = ComputadorListar();
-    computadores = computador.listarComputadoresTudo(context);
   }
 
   @override
@@ -33,61 +31,15 @@ class _ListarComputadoresTudoState extends State<ListarComputadoresTudo> {
           width: double.maxFinite,
           padding: EdgeInsets.symmetric(horizontal: 15.h),
           decoration: AppDecoration.fillOnPrimary,
-          child: FutureBuilder<List<ComputadorListar>>(
-              future: computadores,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return ListView.separated(
-                    //shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      ComputadorListar computador = snapshot.data![index];
-                      return Container(
-                        width: double.maxFinite,
-                        margin: EdgeInsets.only(top: 15.v),
-                        decoration: BoxDecoration(
-                          color: appTheme.blackLight,
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        child: ExpansionTile(
-                          title: Align(
-                            alignment: const Alignment(0.2, 0),
-                            child: Text(
-                              computador.tombamento!,
-                            ),
-                          ),
-                          subtitle: Align(
-                              alignment: const Alignment(0.2, 0),
-                              child: Text(
-                                  "${computador.modelo!} - ${computador.predio!}")),
-                          collapsedIconColor: appTheme.blueGray100,
-                          tilePadding: EdgeInsets.symmetric(
-                              vertical: 0.v, horizontal: 0.h),
-                          children: <Widget>[
-                            Text(computador.descricao!),
-                            Text(computador.estado!),
-                            Text(computador.serial!),
-                            Text(computador.sistemaOperacional!),
-                            Text(computador.ram!),
-                            Text(computador.ramDdr!),
-                            Text(computador.hd!),
-                            Text(computador.complexo!),
-                            Text(computador.predio!),
-                            Text(computador.andar!),
-                            Text(computador.comodo!),
-                          ],
-                        ),
-                      );
-                    },
-                    itemCount: snapshot.data!.length,
-                    separatorBuilder: (BuildContext context, int index) {
-                      return const SizedBox(height: 0);
-                    },
-                  );
-                } else if (snapshot.hasError) {
-                  return Text(snapshot.error.toString());
-                }
-                return const LinearProgressIndicator();
-              }),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 15.v,
+              ),
+              computador.listarComputadoresWidget(
+                  computador.listarComputadoresTudo(context)),
+            ],
+          ),
         ),
         bottomNavigationBar: CustomBottomBar(),
       ),

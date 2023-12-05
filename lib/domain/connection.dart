@@ -38,7 +38,6 @@ abstract class Connection extends Erro {
         'Authorization': token
       };
     }
-    print(_getHttpHeader);
     return await http.get(url, headers: _getHttpHeader);
   }
 

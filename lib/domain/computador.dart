@@ -90,6 +90,143 @@ class ComputadorListar extends Connection {
       throw Exception("msg_erro_autorizacao".tr);
     }
   }
+
+  Future<List<ComputadorListar>> listarComputadoresPorComplexo(
+      BuildContext context, String complexo) async {
+    var response = await getHttp(montaURL(
+        URIsAPI.uri_listar_computadores_por_complexo, {'complexo': complexo}));
+    if (response.statusCode == 200) {
+      List listaComputadores = jsonDecode(utf8.decode(response.bodyBytes));
+      return listaComputadores
+          .map((json) => ComputadorListar.fromJson(json))
+          .toList();
+    } else {
+      throw Exception("msg_erro_autorizacao".tr);
+    }
+  }
+
+  Future<List<ComputadorListar>> listarComputadoresPorPredio(
+      BuildContext context, String predio) async {
+    var response = await getHttp(montaURL(
+        URIsAPI.uri_listar_computadores_por_predio, {'predio': predio}));
+    if (response.statusCode == 200) {
+      List listaComputadores = jsonDecode(utf8.decode(response.bodyBytes));
+      return listaComputadores
+          .map((json) => ComputadorListar.fromJson(json))
+          .toList();
+    } else {
+      throw Exception("msg_erro_autorizacao".tr);
+    }
+  }
+
+  Future<List<ComputadorListar>> listarPatrimoniosPorAndar(
+      Future<String> predio0, Future<String> andar0) async {
+    String predio = await predio0;
+    String andar = await andar0;
+    var response = await getHttp(montaURL(
+        URIsAPI.uri_listar_computadoress_por_andar,
+        {'predio': predio, 'andar': andar}));
+
+    if (response.statusCode == 200) {
+      List listarComputadores = jsonDecode(utf8.decode(response.bodyBytes));
+      return listarComputadores
+          .map((json) => ComputadorListar.fromJson(json))
+          .toList();
+    } else {
+      throw Exception("msg_erro_autorizacao".tr);
+    }
+  }
+
+  FutureBuilder<List<ComputadorListar>> listarComputadoresWidget(
+      Future<List<ComputadorListar>>? future) {
+    return FutureBuilder<List<ComputadorListar>>(
+        future: future,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return Expanded(
+              child: ListView.separated(
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  ComputadorListar computador = snapshot.data![index];
+                  return Container(
+                    width: double.maxFinite,
+                    //margin: EdgeInsets.all(10.h),
+                    margin: EdgeInsets.only(bottom: 15.v),
+                    decoration: BoxDecoration(
+                      color: appTheme.blackLight,
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: ExpansionTile(
+                      title: Align(
+                        alignment: const Alignment(0.2, 0),
+                        child: Text(
+                          computador.tombamento!,
+                        ),
+                      ),
+                      subtitle: Align(
+                          alignment: const Alignment(0.2, 0),
+                          child: Text("${computador.predio!}")),
+                      collapsedIconColor: appTheme.blueGray100,
+                      tilePadding:
+                          EdgeInsets.symmetric(vertical: 0.v, horizontal: 0.h),
+                      children: <Widget>[
+                        Text(computador.descricao!),
+                        Text(computador.estado!),
+                        Text(computador.serial!),
+                        Text(computador.sistemaOperacional!),
+                        Text(computador.ram!),
+                        Text(computador.ramDdr!),
+                        Text(computador.hd!),
+                        Text(computador.complexo!),
+                        Text(computador.predio!),
+                        Text(computador.andar!),
+                        Text(computador.comodo!),
+                        SizedBox(
+                          height: 15.v,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            CustomElevatedButton(
+                              buttonStyle: CustomButtonStyles.fillPurple,
+                              buttonTextStyle:
+                                  CustomTextStyles.titleMediumOnPrimary,
+                              text: "Alienar",
+                              width: 100.h,
+                              height: 30.v,
+                            ),
+                            CustomElevatedButton(
+                              buttonTextStyle:
+                                  CustomTextStyles.titleMediumOnPrimary,
+                              text: "Editar",
+                              width: 100.h,
+                              height: 30.v,
+                            ),
+                            CustomElevatedButton(
+                              buttonTextStyle:
+                                  CustomTextStyles.titleMediumOnPrimary,
+                              text: "Manejar",
+                              width: 100.h,
+                              height: 30.v,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                },
+                itemCount: snapshot.data!.length,
+                separatorBuilder: (BuildContext context, int index) {
+                  return const SizedBox(height: 0);
+                },
+              ),
+            );
+          } else if (snapshot.hasError) {
+            return Text(snapshot.error.toString());
+          }
+          return const LinearProgressIndicator();
+        });
+  }
 }
 
 class ComputadorCadastrar {

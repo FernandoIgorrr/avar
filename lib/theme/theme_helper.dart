@@ -127,6 +127,7 @@ class PrimaryColors {
   // BlueGray
   Color get blueGray100 => Color(0XFFD9D9D9);
 
+  color get redAccent => Color(redAccent);
   // Purple
   Color get purple500 => Color(0XFF9C27B0);
 
