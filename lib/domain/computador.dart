@@ -1,4 +1,5 @@
 import 'package:avar/domain/connection.dart';
+import 'package:avar/presentation/patrimonios_home_page/editar_computador_page/editar_computador_page.dart';
 import 'package:flutter/material.dart';
 import 'package:avar/core/app_export.dart';
 import 'dart:convert';
@@ -165,7 +166,8 @@ class ComputadorListar extends Connection {
                       ),
                       subtitle: Align(
                           alignment: const Alignment(0.2, 0),
-                          child: Text("${computador.predio!}")),
+                          child: Text(
+                              "${computador.modelo!}     |     ${computador.predio!}")),
                       collapsedIconColor: appTheme.blueGray100,
                       tilePadding:
                           EdgeInsets.symmetric(vertical: 0.v, horizontal: 0.h),
@@ -185,28 +187,40 @@ class ComputadorListar extends Connection {
                           height: 15.v,
                         ),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             CustomElevatedButton(
-                              buttonStyle: CustomButtonStyles.fillPurple,
+                              buttonStyle:
+                                  CustomButtonStyles.fillRedAccentBotLeft,
                               buttonTextStyle:
                                   CustomTextStyles.titleMediumOnPrimary,
                               text: "Alienar",
-                              width: 100.h,
+                              width: 110.h,
                               height: 30.v,
                             ),
                             CustomElevatedButton(
-                              buttonTextStyle:
-                                  CustomTextStyles.titleMediumOnPrimary,
-                              text: "Editar",
-                              width: 100.h,
-                              height: 30.v,
-                            ),
+                                buttonStyle:
+                                    CustomButtonStyles.fillPrimarySquare,
+                                buttonTextStyle:
+                                    CustomTextStyles.titleMediumOnPrimary,
+                                text: "Editar",
+                                width: 120.h,
+                                height: 30.v,
+                                onPressed: () => {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (_) =>
+                                                  EditarComputadorPage(
+                                                      computador: computador))),
+                                    }),
                             CustomElevatedButton(
+                              buttonStyle:
+                                  CustomButtonStyles.fillGreenLightBotRight,
                               buttonTextStyle:
                                   CustomTextStyles.titleMediumOnPrimary,
                               text: "Manejar",
-                              width: 100.h,
+                              width: 115.h,
                               height: 30.v,
                             ),
                           ],
@@ -229,7 +243,8 @@ class ComputadorListar extends Connection {
   }
 }
 
-class ComputadorCadastrar {
+class ComputadorCadastrar extends Connection {
+  String? id;
   String? tombamento;
   String? descricao;
   int? estado;
@@ -243,7 +258,8 @@ class ComputadorCadastrar {
   String? serial;
 
   ComputadorCadastrar(
-      {this.tombamento,
+      {this.id,
+      this.tombamento,
       this.descricao,
       this.estado,
       this.localidade,
@@ -271,6 +287,7 @@ class ComputadorCadastrar {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
     data['tombamento'] = this.tombamento;
     data['descricao'] = this.descricao;
     data['estado'] = this.estado;
@@ -286,7 +303,7 @@ class ComputadorCadastrar {
   }
 }
 
-class Modelo {
+class Modelo extends Connection {
   int? id;
   String? descricao;
 
@@ -308,9 +325,24 @@ class Modelo {
       List<Modelo> modeloList) {
     return modeloList.map((modelo) => modelo.toJson()).toList();
   }
+
+  Future<List<Map<String, dynamic>>> listarModelos() async {
+    var response = await getHttp(montaURL(URIsAPI.uri_modelos, null));
+
+    if (response.statusCode == 200) {
+      List modelos0 = jsonDecode(utf8.decode(response.bodyBytes));
+
+      var modelos = modelos0.map((json) => Modelo.fromJson(json)).toList();
+      return Modelo.convertListToMapList(modelos);
+    } else {
+      throw Exception("msg_erro_autorizacao".tr);
+    }
+  }
+
+  alterarDados() async {}
 }
 
-class SistemaOperacional {
+class SistemaOperacional extends Connection {
   int? id;
   String? descricao;
 
@@ -332,9 +364,23 @@ class SistemaOperacional {
       List<SistemaOperacional> sistemaOperacionalList) {
     return sistemaOperacionalList.map((so) => so.toJson()).toList();
   }
+
+  Future<List<Map<String, dynamic>>> listarSistemasOperacionais() async {
+    var response =
+        await getHttp(montaURL(URIsAPI.uri_sistemas_operacionais, null));
+
+    if (response.statusCode == 200) {
+      List os0 = jsonDecode(utf8.decode(response.bodyBytes));
+
+      var os = os0.map((json) => SistemaOperacional.fromJson(json)).toList();
+      return SistemaOperacional.convertListToMapList(os);
+    } else {
+      throw Exception("msg_erro_autorizacao".tr);
+    }
+  }
 }
 
-class RAM {
+class RAM extends Connection {
   int? id;
   String? descricao;
 
@@ -355,9 +401,22 @@ class RAM {
   static List<Map<String, dynamic>> convertListToMapList(List<RAM> ramList) {
     return ramList.map((ram) => ram.toJson()).toList();
   }
+
+  Future<List<Map<String, dynamic>>> listarRams() async {
+    var response = await getHttp(montaURL(URIsAPI.uri_ram, null));
+
+    if (response.statusCode == 200) {
+      List ram0 = jsonDecode(utf8.decode(response.bodyBytes));
+
+      var ram = ram0.map((json) => RAM.fromJson(json)).toList();
+      return RAM.convertListToMapList(ram);
+    } else {
+      throw Exception("msg_erro_autorizacao".tr);
+    }
+  }
 }
 
-class RAMDDR {
+class RAMDDR extends Connection {
   int? id;
   String? descricao;
 
@@ -379,9 +438,22 @@ class RAMDDR {
       List<RAMDDR> ramddrList) {
     return ramddrList.map((ramddr) => ramddr.toJson()).toList();
   }
+
+  Future<List<Map<String, dynamic>>> listarRamsDdr() async {
+    var response = await getHttp(montaURL(URIsAPI.uri_ram_ddr, null));
+
+    if (response.statusCode == 200) {
+      List ramddr0 = jsonDecode(utf8.decode(response.bodyBytes));
+
+      var ramddr = ramddr0.map((json) => RAMDDR.fromJson(json)).toList();
+      return RAMDDR.convertListToMapList(ramddr);
+    } else {
+      throw Exception("msg_erro_autorizacao".tr);
+    }
+  }
 }
 
-class HD {
+class HD extends Connection {
   int? id;
   String? descricao;
 
@@ -401,5 +473,18 @@ class HD {
 
   static List<Map<String, dynamic>> convertListToMapList(List<HD> hdList) {
     return hdList.map((hd) => hd.toJson()).toList();
+  }
+
+  Future<List<Map<String, dynamic>>> listarHds() async {
+    var response = await getHttp(montaURL(URIsAPI.uri_hd, null));
+
+    if (response.statusCode == 200) {
+      List hd0 = jsonDecode(utf8.decode(response.bodyBytes));
+
+      var hd = hd0.map((json) => HD.fromJson(json)).toList();
+      return HD.convertListToMapList(hd);
+    } else {
+      throw Exception("msg_erro_autorizacao".tr);
+    }
   }
 }

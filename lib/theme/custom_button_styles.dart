@@ -11,6 +11,25 @@ class CustomButtonStyles {
           borderRadius: BorderRadius.circular(10.h),
         ),
       );
+  static ButtonStyle get fillRedAccentBotLeft => ElevatedButton.styleFrom(
+        backgroundColor: theme.colorScheme.error,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10.h)),
+        ),
+      );
+  static ButtonStyle get fillGreenLightBotRight => ElevatedButton.styleFrom(
+        backgroundColor: appTheme.greenLight,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(bottomRight: Radius.circular(10.h)),
+        ),
+      );
+  static ButtonStyle get fillPrimarySquare => ElevatedButton.styleFrom(
+        backgroundColor: appTheme.purple500,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(bottomRight: Radius.circular(0.h)),
+        ),
+      );
+
   static ButtonStyle get fillPurple => ElevatedButton.styleFrom(
         backgroundColor: appTheme.purple500,
         shape: RoundedRectangleBorder(

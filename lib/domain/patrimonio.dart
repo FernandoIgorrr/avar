@@ -1,3 +1,9 @@
+import 'dart:convert';
+import 'package:avar/core/app_export.dart';
+
+import 'package:avar/core/utils/api_uris.dart';
+import 'package:avar/domain/connection.dart';
+
 class PatrimonioListar {
   String? id;
   String? tombamento;
@@ -73,7 +79,7 @@ class PatrimonioCadastrar {
   }
 }
 
-class EstadoPatrimonio {
+class EstadoPatrimonio extends Connection {
   int? id;
   String? descricao;
 
@@ -97,9 +103,23 @@ class EstadoPatrimonio {
         .map((estadoPatrimonio) => estadoPatrimonio.toJson())
         .toList();
   }
+
+  Future<List<Map<String, dynamic>>> listarEstados() async {
+    var response = await getHttp(montaURL(URIsAPI.uri_estados_patrimono, null));
+
+    if (response.statusCode == 200) {
+      List estados0 = jsonDecode(utf8.decode(response.bodyBytes));
+
+      var estados =
+          estados0.map((json) => EstadoPatrimonio.fromJson(json)).toList();
+      return EstadoPatrimonio.convertListToMapList(estados);
+    } else {
+      throw Exception("msg_erro_autorizacao".tr);
+    }
+  }
 }
 
-class TipoPatrimonio {
+class TipoPatrimonio extends Connection {
   int? id;
   String? descricao;
 
@@ -122,5 +142,18 @@ class TipoPatrimonio {
     return tipoPatrimonioList
         .map((tipoPatrimonio) => tipoPatrimonio.toJson())
         .toList();
+  }
+
+  Future<List<Map<String, dynamic>>> listarEstados() async {
+    var response = await getHttp(montaURL(URIsAPI.uri_tipos_patrimono, null));
+
+    if (response.statusCode == 200) {
+      List tipos0 = jsonDecode(utf8.decode(response.bodyBytes));
+
+      var tipos = tipos0.map((json) => TipoPatrimonio.fromJson(json)).toList();
+      return TipoPatrimonio.convertListToMapList(tipos);
+    } else {
+      throw Exception("msg_erro_autorizacao".tr);
+    }
   }
 }

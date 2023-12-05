@@ -8,10 +8,7 @@ import 'package:http/http.dart';
 abstract class Connection extends Erro {
   Map<String, String> _getHttpHeader = {};
   Map<String, String> _postHttpHeader = {};
-
-  Connection() {}
-
-  Future<void> _montaHeader() async {}
+  Map<String, String> _putHttpHeader = {};
 
   Uri montaURL(String urlApi, Map<String, dynamic>? parametros) {
     if (parametros == null) {
@@ -42,10 +39,45 @@ abstract class Connection extends Erro {
   }
 
   Future<Response> postHttp(Uri url, Connection connection) async {
+    String? token = await Usuario.recuperarToken();
+
+    if (token == '' || token == null) {
+      _postHttpHeader = {
+        'Content-Type': 'application/json',
+        'Authorization': ''
+      };
+    } else {
+      _postHttpHeader = {
+        'Content-Type': 'application/json',
+        'Authorization': token
+      };
+    }
     String body = jsonEncode(connection.toJson());
     return await http.post(
       url,
       headers: _postHttpHeader,
+      body: body,
+    );
+  }
+
+  Future<Response> putHttp(Uri url, Connection connection) async {
+    String? token = await Usuario.recuperarToken();
+
+    if (token == '' || token == null) {
+      _putHttpHeader = {
+        'Content-Type': 'application/json',
+        'Authorization': ''
+      };
+    } else {
+      _putHttpHeader = {
+        'Content-Type': 'application/json',
+        'Authorization': token
+      };
+    }
+    String body = jsonEncode(connection.toJson());
+    return await http.put(
+      url,
+      headers: _putHttpHeader,
       body: body,
     );
   }

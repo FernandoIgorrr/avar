@@ -1,5 +1,8 @@
+import 'package:avar/domain/computador.dart';
+import 'package:avar/domain/connection.dart';
 import 'package:avar/presentation/patrimonios_home_page/cadastrar_computador_page/cadastrar_computador_page.dart';
 import 'package:avar/presentation/patrimonios_home_page/cadastrar_patrimonio_page/cadastrar_patrimonio_page.dart';
+import 'package:avar/presentation/patrimonios_home_page/editar_computador_page/editar_computador_page.dart';
 import 'package:avar/presentation/patrimonios_home_page/listar_computadores_page/listar_computadores_page.dart';
 import 'package:avar/presentation/patrimonios_home_page/listar_computadores_page/listar_computadores_por_andar.dart';
 import 'package:avar/presentation/patrimonios_home_page/listar_computadores_page/listar_computadores_por_complexo.dart';
@@ -36,11 +39,13 @@ class AppRoutes {
   static const String listarPatrimoniosAndar = 'listar_patrimonios_andar';
   static const String listarPatrimoniosComodo = 'listar_patrimonios_comodo';
   static const String listarPatrimoniosPredio = 'listar_patrimonios_predio';
+
   // PCS
   static const String listarComputadoresAndar = 'listar_computadores_andar';
   static const String listarComputadoresComplexo =
       'listar_computadores_complexo';
   static const String listarComputadoresPredio = 'listar_computadores_predio';
+  static const String AlterarComputadorInfor = 'alterar_computador_info';
   // CADASTRO
   static const String cadastrarPatrimonio = 'cadastrar_patrimonio';
   static const String cadastrarComputador = 'cadastrar_computador';

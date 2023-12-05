@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:avar/core/app_export.dart';
 import 'package:avar/domain/computador.dart';
 import 'package:avar/domain/localidade.dart';

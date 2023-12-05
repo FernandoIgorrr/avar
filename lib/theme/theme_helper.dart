@@ -123,13 +123,14 @@ class PrimaryColors {
   Color get black900 => Color(0XFF000000);
 
   Color get black900opacity => Color(0XFF000000).withOpacity(0.3);
-
   // BlueGray
   Color get blueGray100 => Color(0XFFD9D9D9);
-
-  color get redAccent => Color(redAccent);
+  // Red Accent
+  Color get redAccent => Color(0XFFFF5252);
   // Purple
   Color get purple500 => Color(0XFF9C27B0);
+//Green
+  Color get greenLight => Color(0XFF69F0AE);
 
   Color get blackLight => Color(0xFF4A4A4A);
 }

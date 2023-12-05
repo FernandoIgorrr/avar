@@ -43,6 +43,9 @@ final Map<String, String> ptBr = {
   "lbl_listar_por_comodo": "Listar por comodo",
   "lbl_listar_computadores": "Listar computadores",
   "lbl_listar_pc_tudo": "Listar Todos",
+  // Aterar dados
+  "lbl_alterar": "Alterar",
+  "lbl_alterar_dados": "Alterar dados",
 
   // LIstar_por_comodo Screen
   "lbl_localidade": "Localidade",

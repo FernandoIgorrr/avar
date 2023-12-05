@@ -7,6 +7,7 @@ class CustomDropDownMenu extends StatefulWidget {
     super.key,
     required this.items,
     this.selectedItemId,
+    this.selectedItem,
     this.selectedItemIdController,
     this.descName,
     this.reloadElement,
@@ -15,18 +16,25 @@ class CustomDropDownMenu extends StatefulWidget {
   final List<Map<String, dynamic>> items;
   int? selectedItemId;
   final TextEditingController? selectedItemIdController;
+  String? selectedItem;
   final String? descName;
   final ValueNotifier<int>? reloadElement;
 
   @override
   State<CustomDropDownMenu> createState() => _CustomDropDownMenuState(
-      items, selectedItemId, selectedItemIdController, descName, reloadElement);
+      items,
+      selectedItemId,
+      selectedItem,
+      selectedItemIdController,
+      descName,
+      reloadElement);
 }
 
 class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
   _CustomDropDownMenuState(
     this.items,
     this.selectedItemId,
+    this.selectedItem,
     this.selectedItemIdController,
     this.descName,
     this.reloadElement,
@@ -35,12 +43,20 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
   final List<Map<String, dynamic>> items;
   final TextEditingController? selectedItemIdController;
   int? selectedItemId;
+  String? selectedItem;
   final String? descName;
   final ValueNotifier<int>? reloadElement;
   @override
   void initState() {
-    widget.selectedItemIdController?.text = items.first['id'].toString();
     super.initState();
+
+    if (selectedItem == null) {
+      widget.selectedItemIdController?.text = items.first['id'].toString();
+    } else {
+      selectedItemId = items.firstWhere((item) =>
+          item[descName ?? 'descricao'].toString() == selectedItem)['id'];
+      widget.selectedItemIdController?.text = selectedItemId.toString();
+    }
   }
 
   @override

@@ -1,4 +1,5 @@
 import 'package:avar/core/app_export.dart';
+import 'package:avar/domain/computador.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/material.dart';
