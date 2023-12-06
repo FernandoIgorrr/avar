@@ -1,3 +1,4 @@
+import 'package:avar/domain/usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
@@ -121,13 +122,37 @@ class _LoginScreenState extends State<LoginScreen> {
         body: body,
       );
 
-      // print(response.statusCode);
-      // print(response.body);
-
       if (response.statusCode == 200) {
         String token = jsonDecode(response.body)['token'];
         await _sharedPreferences.setString('token', 'Bearer $token');
         if (!mounted) return;
+        Usuario usuario = Usuario();
+        try {
+          final resposta = await usuario.getHttp(usuario.montaURL(
+              URIsAPI.uri_dados_usuarios, {'login': _userNameController.text}));
+          if (resposta.statusCode == 200) {
+            usuario =
+                Usuario.fromJson(jsonDecode(utf8.decode(resposta.bodyBytes)));
+            await _sharedPreferences.setString('id', usuario.id!);
+            await _sharedPreferences.setString('login', usuario.login!);
+            await _sharedPreferences.setString(
+                'tipo_usuario_id', '${usuario.tipoUsuario!.id}');
+            await _sharedPreferences.setString(
+                'tipo_usuario_desc', usuario.tipoUsuario!.descricao!);
+            print(
+                "${usuario.id} | ${usuario.login} | ${usuario.tipoUsuario!.id}");
+          } else {
+            print("DEU ERRADO!");
+          }
+        } catch (e) {
+          if (!mounted) return;
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: Colors.redAccent,
+            content: Text("Algo deu errado", textAlign: TextAlign.center),
+            behavior: SnackBarBehavior.floating,
+            duration: Duration(seconds: 5),
+          ));
+        }
         Navigator.of(context)
             .pushReplacementNamed(AppRoutes.supervisorHomePage);
       } else {
