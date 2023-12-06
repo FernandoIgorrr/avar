@@ -144,7 +144,7 @@ class TipoPatrimonio extends Connection {
         .toList();
   }
 
-  Future<List<Map<String, dynamic>>> listarEstados() async {
+  Future<List<Map<String, dynamic>>> listarTipos() async {
     var response = await getHttp(montaURL(URIsAPI.uri_tipos_patrimono, null));
 
     if (response.statusCode == 200) {
