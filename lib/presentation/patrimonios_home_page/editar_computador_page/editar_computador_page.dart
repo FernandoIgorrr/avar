@@ -1,12 +1,9 @@
 import 'package:avar/core/app_export.dart';
 import 'package:avar/domain/computador.dart';
-import 'package:avar/domain/localidade.dart';
 import 'package:avar/domain/patrimonio.dart';
 import 'package:avar/widgets/custom_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 
 // ignore_for_file: must_be_immutable
 class EditarComputadorPage extends StatefulWidget {
@@ -39,8 +36,6 @@ class EditarComputadorPageState extends State<EditarComputadorPage> {
 
   GlobalKey<NavigatorState> navigatorKey = GlobalKey();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  late ComputadorCadastrar computadorCadastrar;
 
   late EstadoPatrimonio estado;
 
@@ -364,11 +359,6 @@ class EditarComputadorPageState extends State<EditarComputadorPage> {
         });
   }
 
-  Future<String?> recuperarToken() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('token');
-  }
-
   alterar() async {
     if (_formKey.currentState!.validate()) {
       ComputadorCadastrar computador = ComputadorCadastrar(
@@ -384,72 +374,33 @@ class EditarComputadorPageState extends State<EditarComputadorPage> {
           hd: int.parse(_hdController.text),
           localidade: 0,
           alienado: false);
-      // String? token = await recuperarToken();
-      // if (token == '' || token == null || token.isEmpty) {
-      //   if (!mounted) return;
-      //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      //     backgroundColor: Colors.redAccent,
-      //     content: Text("msg_erro_autorizacao".tr, textAlign: TextAlign.center),
-      //     behavior: SnackBarBehavior.floating,
-      //     duration: const Duration(seconds: 5),
-      //   ));
-      // } else {
-      //   var url = Uri.parse(URIsAPI.uri_cadastrar_computador);
+      // try {
+      var response = await computador.putHttp(
+          computador.montaURL(URIsAPI.uri_alterar_dados_computador, null),
+          computador);
 
-      //   Map<String, String> headers = {
-      //     'Content-Type': 'application/json',
-      //     'Authorization': token,
-      //   };
+      if (response.statusCode == 202) {
+        if (!mounted) return;
 
-      //   String body = jsonEncode(computador.toJson());
-
-      try {
-        // final response = await http.post(
-        //   url,
-        //   headers: headers,
-        //   body: body,
-        var response = await computadorCadastrar.putHttp(
-            computadorCadastrar.montaURL(
-                URIsAPI.uri_alterar_dados_computador, null),
-            computadorCadastrar);
-
-        if (response.statusCode == 200) {
-          if (!mounted) return;
-
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            backgroundColor: Colors.greenAccent,
-            content: Text(response.body,
-                textAlign: TextAlign.center,
-                style: TextStyle(color: appTheme.black900)),
-            behavior: SnackBarBehavior.floating,
-            dismissDirection: DismissDirection.up,
-            margin: EdgeInsets.only(
-                bottom: MediaQuery.of(context).size.height - 210,
-                left: 15,
-                right: 15),
-            duration: const Duration(seconds: 5),
-          ));
-        } else {
-          if (!mounted) return;
-
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            backgroundColor: Colors.redAccent,
-            content: Text(response.body, textAlign: TextAlign.center),
-            behavior: SnackBarBehavior.floating,
-            dismissDirection: DismissDirection.up,
-            margin: EdgeInsets.only(
-                bottom: MediaQuery.of(context).size.height - 210,
-                left: 15,
-                right: 15),
-            duration: const Duration(seconds: 5),
-          ));
-        }
-      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Colors.greenAccent,
+          content: Text(response.body,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: appTheme.black900)),
+          behavior: SnackBarBehavior.floating,
+          dismissDirection: DismissDirection.up,
+          margin: EdgeInsets.only(
+              bottom: MediaQuery.of(context).size.height - 210,
+              left: 15,
+              right: 15),
+          duration: const Duration(seconds: 5),
+        ));
+      } else {
         if (!mounted) return;
 
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: Colors.redAccent,
-          content: Text("msg_erro_de_rede".tr, textAlign: TextAlign.center),
+          content: Text(response.body, textAlign: TextAlign.center),
           behavior: SnackBarBehavior.floating,
           dismissDirection: DismissDirection.up,
           margin: EdgeInsets.only(
@@ -459,6 +410,21 @@ class EditarComputadorPageState extends State<EditarComputadorPage> {
           duration: const Duration(seconds: 5),
         ));
       }
+      // } catch (e) {
+      //   if (!mounted) return;
+
+      //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      //     backgroundColor: Colors.redAccent,
+      //     content: Text("msg_erro_de_rede".tr, textAlign: TextAlign.center),
+      //     behavior: SnackBarBehavior.floating,
+      //     dismissDirection: DismissDirection.up,
+      //     margin: EdgeInsets.only(
+      //         bottom: MediaQuery.of(context).size.height - 210,
+      //         left: 15,
+      //         right: 15),
+      //     duration: const Duration(seconds: 5),
+      //   ));
+      // }
     }
   }
 }

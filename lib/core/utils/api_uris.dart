@@ -42,7 +42,7 @@ class URIsAPI {
       "http://10.0.2.2:8080/api/patrimonio/computador/listar_por_andar";
 
   static const String uri_alterar_dados_computador =
-      "http://localhost:8080/api/patrimonio/atualizar";
+      "http://10.0.2.2:8080/api/patrimonio/computador/atualizar";
 
 //SPECS PCS
   static const String uri_modelos =
