@@ -1,5 +1,4 @@
 import 'package:avar/core/app_export.dart';
-import 'package:avar/widgets/custom_bottom_bar.dart';
 import 'package:flutter/material.dart';
 
 // ignore_for_file: must_be_immutable
@@ -49,20 +48,20 @@ class PatrimoniosHomePage extends StatelessWidget {
                     text: "lbl_listar_computadores".tr,
                     routeName: AppRoutes.listarComputadoresHomePage,
                   ),
-                  ButtonIcon(text: "lbl_alienar".tr),
-                  ButtonIcon(text: "lbl_alienamentos".tr),
+                  ButtonIcon(
+                    text: "lbl_alienamentos".tr,
+                    routeName: AppRoutes.listarAlienamentosTudo,
+                  ),
+                  ButtonIcon(
+                    text: "lbl_manejos".tr,
+                    routeName: AppRoutes.listarManejosTudo,
+                  ),
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ButtonIcon(text: "lbl_manejos".tr),
-                ],
-              )
             ],
           ),
         ),
-        bottomNavigationBar: CustomBottomBar(),
+        endDrawer: const CustomNavigationDrawer(),
       ),
     );
   }

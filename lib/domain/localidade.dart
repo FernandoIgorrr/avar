@@ -3,6 +3,30 @@ import 'dart:convert';
 import 'package:avar/core/app_export.dart';
 import 'package:avar/domain/connection.dart';
 
+class Localidade {
+  int? id;
+  String? nome;
+  Andar? andar;
+
+  Localidade({this.id, this.nome, this.andar});
+
+  Localidade.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    nome = json['nome'];
+    andar = json['andar'] != null ? new Andar.fromJson(json['andar']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['nome'] = this.nome;
+    if (this.andar != null) {
+      data['andar'] = this.andar!.toJson();
+    }
+    return data;
+  }
+}
+
 class Complexo extends Connection {
   int? id;
   String? nome;

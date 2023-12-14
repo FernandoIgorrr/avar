@@ -1,10 +1,9 @@
 import 'package:avar/core/app_export.dart';
-import 'package:avar/widgets/custom_bottom_bar.dart';
 import 'package:flutter/material.dart';
 
 // ignore_for_file: must_be_immutable
-class BolsistaHomePage extends StatelessWidget {
-  const BolsistaHomePage({Key? key})
+class BolsistaListarPage extends StatelessWidget {
+  const BolsistaListarPage({Key? key})
       : super(
           key: key,
         );
@@ -15,34 +14,31 @@ class BolsistaHomePage extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-        // appBar: CustomAppBar(
-        //   title: AppbarTitle(text: 'lbl_home'.tr),
-        // ),
         appBar: CustomAppBar(
-            automaticallyImplyLeading: false,
-            title: AppbarTitle(
-              text: "lbl_home".tr,
-            )),
+          title: AppbarTitle(text: 'lbl_listar_bolsistas'.tr),
+        ),
         body: Container(
           width: double.maxFinite,
           decoration: AppDecoration.fillOnPrimary,
           child: Column(
             children: [
-              const SizedBox(height: 25), // Espaço vertical entre linhas
+              const SizedBox(height: 25),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ButtonIcon(
-                      text: "lbl_patrimonios".tr,
-                      routeName: AppRoutes.patrimoniosHomePage),
-                  ButtonIcon(
-                    text: "lbl_chamados".tr,
-                    routeName: AppRoutes.chamadoHomePage,
+                    text: "lbl_listar_todos".tr,
+                    routeName: AppRoutes.bolsistaListarTudo,
                   ),
-                  ButtonIcon(text: "lbl_tarefas".tr),
+                  ButtonIcon(
+                    text: "lbl_listar_ativos".tr,
+                    routeName: AppRoutes.bolsistaListarTudo,
+                  ),
+                  ButtonIcon(
+                    text: "lbl_listar_desligados".tr,
+                  ),
                 ],
               ),
-              const SizedBox(height: 25),
             ],
           ),
         ),

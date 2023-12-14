@@ -129,7 +129,7 @@ class _ListarComputadoresPorAndarState
                 }),
           ]),
         ),
-        bottomNavigationBar: CustomBottomBar(),
+        endDrawer: const CustomNavigationDrawer(),
       ),
     );
   }

@@ -230,7 +230,7 @@ class EditarComputadorPageState extends State<EditarComputadorPage> {
             ),
           ),
         ),
-        bottomNavigationBar: CustomBottomBar(),
+        endDrawer: const CustomNavigationDrawer(),
       ),
     );
   }
@@ -374,57 +374,57 @@ class EditarComputadorPageState extends State<EditarComputadorPage> {
           hd: int.parse(_hdController.text),
           localidade: 0,
           alienado: false);
-      // try {
-      var response = await computador.putHttp(
-          computador.montaURL(URIsAPI.uri_alterar_dados_computador, null),
-          computador);
+      try {
+        var response = await computador.putHttp(
+            computador.montaURL(URIsAPI.uri_alterar_dados_computador, null),
+            computador);
 
-      if (response.statusCode == 202) {
-        if (!mounted) return;
+        if (response.statusCode == 202) {
+          if (!mounted) return;
 
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          backgroundColor: Colors.greenAccent,
-          content: Text(response.body,
-              textAlign: TextAlign.center,
-              style: TextStyle(color: appTheme.black900)),
-          behavior: SnackBarBehavior.floating,
-          dismissDirection: DismissDirection.up,
-          margin: EdgeInsets.only(
-              bottom: MediaQuery.of(context).size.height - 210,
-              left: 15,
-              right: 15),
-          duration: const Duration(seconds: 5),
-        ));
-      } else {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Colors.greenAccent,
+            content: Text(response.body,
+                textAlign: TextAlign.center,
+                style: TextStyle(color: appTheme.black900)),
+            behavior: SnackBarBehavior.floating,
+            dismissDirection: DismissDirection.up,
+            margin: EdgeInsets.only(
+                bottom: MediaQuery.of(context).size.height - 210,
+                left: 15,
+                right: 15),
+            duration: const Duration(seconds: 2),
+          ));
+        } else {
+          if (!mounted) return;
+
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Colors.redAccent,
+            content: Text(response.body, textAlign: TextAlign.center),
+            behavior: SnackBarBehavior.floating,
+            dismissDirection: DismissDirection.up,
+            margin: EdgeInsets.only(
+                bottom: MediaQuery.of(context).size.height - 210,
+                left: 15,
+                right: 15),
+            duration: const Duration(seconds: 2),
+          ));
+        }
+      } catch (e) {
         if (!mounted) return;
 
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: Colors.redAccent,
-          content: Text(response.body, textAlign: TextAlign.center),
+          content: Text("msg_erro_de_rede".tr, textAlign: TextAlign.center),
           behavior: SnackBarBehavior.floating,
           dismissDirection: DismissDirection.up,
           margin: EdgeInsets.only(
               bottom: MediaQuery.of(context).size.height - 210,
               left: 15,
               right: 15),
-          duration: const Duration(seconds: 5),
+          duration: const Duration(seconds: 2),
         ));
       }
-      // } catch (e) {
-      //   if (!mounted) return;
-
-      //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      //     backgroundColor: Colors.redAccent,
-      //     content: Text("msg_erro_de_rede".tr, textAlign: TextAlign.center),
-      //     behavior: SnackBarBehavior.floating,
-      //     dismissDirection: DismissDirection.up,
-      //     margin: EdgeInsets.only(
-      //         bottom: MediaQuery.of(context).size.height - 210,
-      //         left: 15,
-      //         right: 15),
-      //     duration: const Duration(seconds: 5),
-      //   ));
-      // }
     }
   }
 }

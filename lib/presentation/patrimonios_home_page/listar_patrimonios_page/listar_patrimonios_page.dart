@@ -61,7 +61,7 @@ class ListarPatrimoniosPage extends StatelessWidget {
             ],
           ),
         ),
-        bottomNavigationBar: CustomBottomBar(),
+        endDrawer: const CustomNavigationDrawer(),
       ),
     );
   }

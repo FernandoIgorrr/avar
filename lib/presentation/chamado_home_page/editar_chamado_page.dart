@@ -1,19 +1,21 @@
 import 'package:avar/core/app_export.dart';
+import 'package:avar/domain/chamado.dart';
+import 'package:avar/domain/localidade.dart';
 import 'package:avar/domain/patrimonio.dart';
 import 'package:flutter/material.dart';
 
 // ignore_for_file: must_be_immutable
-class EditarPatrimonioPage extends StatefulWidget {
-  EditarPatrimonioPage({Key? key, required this.patrimonio}) : super(key: key);
+class EditarChamadoPage extends StatefulWidget {
+  EditarChamadoPage({Key? key, required this.chamado}) : super(key: key);
 
-  PatrimonioListar patrimonio;
+  ChamadoListar chamado;
 
   @override
-  State<EditarPatrimonioPage> createState() => EditarPatrimonioPageState();
+  State<EditarChamadoPage> createState() => EditarChamadoPageState();
 }
 
-class EditarPatrimonioPageState extends State<EditarPatrimonioPage> {
-  TextEditingController _tombamentoController = TextEditingController();
+class EditarChamadoPageState extends State<EditarChamadoPage> {
+  TextEditingController _tituloController = TextEditingController();
 
   TextEditingController _descricaoController = TextEditingController();
 
@@ -24,20 +26,20 @@ class EditarPatrimonioPageState extends State<EditarPatrimonioPage> {
   GlobalKey<NavigatorState> navigatorKey = GlobalKey();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  late EstadoPatrimonio estado;
+  late EstadoChamado estado;
 
-  late TipoPatrimonio tipo;
+  late TipoChamado tipo;
 
   @override
   void initState() {
     super.initState();
 
-    estado = EstadoPatrimonio();
+    estado = EstadoChamado();
 
-    tipo = TipoPatrimonio();
+    tipo = TipoChamado();
 
-    _tombamentoController.text = widget.patrimonio.tombamento.toString();
-    _descricaoController.text = widget.patrimonio.descricao.toString();
+    _tituloController.text = widget.chamado.titulo!;
+    _descricaoController.text = widget.chamado.descricao!;
   }
 
   @override
@@ -63,11 +65,11 @@ class EditarPatrimonioPageState extends State<EditarPatrimonioPage> {
                       child: Column(
                         children: [
                           Text(
-                            "lbl_tombamento".tr,
+                            "lbl_titulo".tr,
                             style: theme.textTheme.titleLarge,
                           ),
                           SizedBox(height: 12.v),
-                          _buildTombamento(context),
+                          _buildTitulo(context),
                           SizedBox(height: 14.v),
                           Text(
                             "lbl_descricao".tr,
@@ -131,15 +133,13 @@ class EditarPatrimonioPageState extends State<EditarPatrimonioPage> {
   }
 
   /// Section Widget
-  Widget _buildTombamento(BuildContext context) {
+  Widget _buildTitulo(BuildContext context) {
     return CustomTextFormField(
-      controller: _tombamentoController,
+      controller: _tituloController,
       textInputType: TextInputType.number,
-      validator: (tombamento) {
-        if (tombamento == null || tombamento.isEmpty) {
-          return 'Tombamento vazio!';
-        } else if (!RegExp(r'^[0-9]+$').hasMatch(_tombamentoController.text)) {
-          return 'O tombamento aceita apenas números!';
+      validator: (titulo) {
+        if (titulo == null || titulo.isEmpty) {
+          return 'Título vazio!';
         }
         return null;
       },
@@ -171,7 +171,7 @@ class EditarPatrimonioPageState extends State<EditarPatrimonioPage> {
   Future<Widget> _buildEstados(BuildContext context) async {
     List<Map<String, dynamic>> items = await estado.listarEstados();
     return CustomDropDownMenu(
-      selectedItem: widget.patrimonio.estado,
+      selectedItem: widget.chamado.estado,
       selectedItemIdController: _estadoController,
       items: items,
     );
@@ -180,7 +180,7 @@ class EditarPatrimonioPageState extends State<EditarPatrimonioPage> {
   Future<Widget> _buildTipos(BuildContext context) async {
     List<Map<String, dynamic>> items = await tipo.listarTipos();
     return CustomDropDownMenu(
-      selectedItem: widget.patrimonio.tipo,
+      selectedItem: widget.chamado.tipo,
       selectedItemIdController: _tipoController,
       items: items,
     );
@@ -201,19 +201,17 @@ class EditarPatrimonioPageState extends State<EditarPatrimonioPage> {
 
   alterar() async {
     if (_formKey.currentState!.validate()) {
-      PatrimonioCadastrar patrimonio = PatrimonioCadastrar(
-          id: widget.patrimonio.id,
-          tombamento: _tombamentoController.text,
+      ChamadoAlterar chamadoAlterar = ChamadoAlterar(
+          id: widget.chamado.id,
+          titulo: _tipoController.text,
           descricao: _descricaoController.text,
           estado: int.parse(_estadoController.text),
-          tipo: int.parse(_tipoController.text),
-          alienado: false);
+          tipo: int.parse(_tipoController.text));
 
-      print("PATRIMONIO: /n ${patrimonio.toJson()}");
       try {
-        var response = await patrimonio.putHttp(
-            patrimonio.montaURL(URIsAPI.Uri_alterar_dados_patrimonio, null),
-            patrimonio);
+        var response = await chamadoAlterar.putHttp(
+            chamadoAlterar.montaURL(URIsAPI.uri_alterar_chamados, null),
+            chamadoAlterar);
 
         if (response.statusCode == 202) {
           if (!mounted) return;

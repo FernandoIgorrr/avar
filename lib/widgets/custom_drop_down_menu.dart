@@ -11,11 +11,13 @@ class CustomDropDownMenu extends StatefulWidget {
     this.selectedItemIdController,
     this.descName,
     this.reloadElement,
+    this.selectedItemController,
   });
 
   final List<Map<String, dynamic>> items;
   int? selectedItemId;
   final TextEditingController? selectedItemIdController;
+  final TextEditingController? selectedItemController;
   String? selectedItem;
   final String? descName;
   final ValueNotifier<int>? reloadElement;
@@ -26,6 +28,7 @@ class CustomDropDownMenu extends StatefulWidget {
       selectedItemId,
       selectedItem,
       selectedItemIdController,
+      selectedItemController,
       descName,
       reloadElement);
 }
@@ -36,12 +39,15 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
     this.selectedItemId,
     this.selectedItem,
     this.selectedItemIdController,
+    this.selectedItemController,
     this.descName,
     this.reloadElement,
   );
 
   final List<Map<String, dynamic>> items;
   final TextEditingController? selectedItemIdController;
+  final TextEditingController? selectedItemController;
+
   int? selectedItemId;
   String? selectedItem;
   final String? descName;

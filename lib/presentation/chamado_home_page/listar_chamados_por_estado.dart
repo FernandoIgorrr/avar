@@ -1,33 +1,29 @@
 import 'package:avar/core/app_export.dart';
-import 'package:avar/domain/computador.dart';
-import 'package:avar/domain/localidade.dart';
-import 'package:avar/widgets/custom_bottom_bar.dart';
+import 'package:avar/domain/chamado.dart';
 import 'package:flutter/material.dart';
 
 // ignore_for_file: must_be_immutable
-class ListarComputadoresPorComplexo extends StatefulWidget {
-  const ListarComputadoresPorComplexo({Key? key}) : super(key: key);
+class ListarChamadosPorEstado extends StatefulWidget {
+  const ListarChamadosPorEstado({Key? key}) : super(key: key);
 
   @override
-  State<ListarComputadoresPorComplexo> createState() =>
-      _ListarComputadoresPorComplexoState();
+  State<ListarChamadosPorEstado> createState() =>
+      _ListarChamadosPorEstadoState();
 }
 
-class _ListarComputadoresPorComplexoState
-    extends State<ListarComputadoresPorComplexo> {
-  late Future<List<ComputadorListar>> computadores;
-  late ComputadorListar computador;
-  late Complexo complexo;
+class _ListarChamadosPorEstadoState extends State<ListarChamadosPorEstado> {
+  TextEditingController _estadoController = TextEditingController();
 
-  TextEditingController _complexoController = TextEditingController();
+  ValueNotifier<String> _reloadEstado = ValueNotifier<String>("Aberto");
 
-  ValueNotifier<String> _reloadComplexo = ValueNotifier<String>("CAMPUS");
+  late ChamadoListar chamado;
+  late EstadoChamado estado;
 
   @override
   void initState() {
     super.initState();
-    computador = ComputadorListar();
-    complexo = Complexo();
+    chamado = ChamadoListar();
+    estado = EstadoChamado();
   }
 
   @override
@@ -35,7 +31,7 @@ class _ListarComputadoresPorComplexoState
     return SafeArea(
       child: Scaffold(
         appBar: CustomAppBar(
-          title: AppbarTitle(text: "lbl_listar_tudo".tr),
+          title: AppbarTitle(text: "lbl_listar_por_estado".tr),
         ),
         body: Container(
           width: double.maxFinite,
@@ -48,13 +44,13 @@ class _ListarComputadoresPorComplexoState
                     EdgeInsets.symmetric(vertical: 0.v, horizontal: 0.h),
                 title: Align(
                   alignment: const Alignment(0.2, 0),
-                  child: Text("lbl_localidade".tr),
+                  child: Text("lbl_estado".tr),
                 ),
                 children: [
                   Column(children: [
                     SizedBox(height: 15.v),
                     FutureBuilder<Widget>(
-                      future: _buildComplexo(context),
+                      future: _buildEstados(context),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
@@ -70,10 +66,10 @@ class _ListarComputadoresPorComplexoState
                   ]),
                 ]),
             ValueListenableBuilder<String>(
-                valueListenable: _reloadComplexo,
+                valueListenable: _reloadEstado,
                 builder: (context, value, child) {
-                  return computador.listarComputadoresWidget(
-                      computador.listarComputadoresPorComplexo(context, value));
+                  return chamado.listarChamadosWidget(
+                      chamado.listarChamadosPorEstado(context, value));
                 }),
           ]),
         ),
@@ -82,14 +78,13 @@ class _ListarComputadoresPorComplexoState
     );
   }
 
-  Future<Widget> _buildComplexo(BuildContext context) async {
-    List<Map<String, dynamic>> items = await complexo.listarComplexos();
+  Future<Widget> _buildEstados(BuildContext context) async {
+    List<Map<String, dynamic>> items = await estado.listarEstados();
     return CustomDropDownMenuString(
-      reloadElement: _reloadComplexo,
-      descName: 'nome',
-      selectedItemIdController: _complexoController,
+      reloadElement: _reloadEstado,
+      selectedItemIdController: _estadoController,
       items: items,
-      selectedItemId: items.first['nome'],
+      selectedItemId: items.first['descricao'],
     );
   }
 }

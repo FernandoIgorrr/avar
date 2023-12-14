@@ -334,7 +334,7 @@ class CadastrarComputadorPageState extends State<CadastrarComputadorPage> {
             ),
           ),
         ),
-        bottomNavigationBar: CustomBottomBar(),
+        endDrawer: const CustomNavigationDrawer(),
       ),
     );
   }
@@ -559,7 +559,7 @@ class CadastrarComputadorPageState extends State<CadastrarComputadorPage> {
         backgroundColor: Colors.redAccent,
         content: Text("msg_erro_autorizacao".tr, textAlign: TextAlign.center),
         behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 5),
+        duration: const Duration(seconds: 2),
       ));
       throw Exception("msg_erro_autorizacao".tr);
     } else {
@@ -590,7 +590,7 @@ class CadastrarComputadorPageState extends State<CadastrarComputadorPage> {
         backgroundColor: Colors.redAccent,
         content: Text("msg_erro_autorizacao".tr, textAlign: TextAlign.center),
         behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 5),
+        duration: const Duration(seconds: 2),
       ));
       throw Exception("msg_erro_autorizacao".tr);
     } else {
@@ -624,7 +624,7 @@ class CadastrarComputadorPageState extends State<CadastrarComputadorPage> {
         backgroundColor: Colors.redAccent,
         content: Text("msg_erro_autorizacao".tr, textAlign: TextAlign.center),
         behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 5),
+        duration: const Duration(seconds: 1),
       ));
       throw Exception("msg_erro_autorizacao".tr);
     } else {
@@ -655,7 +655,7 @@ class CadastrarComputadorPageState extends State<CadastrarComputadorPage> {
         backgroundColor: Colors.redAccent,
         content: Text("msg_erro_autorizacao".tr, textAlign: TextAlign.center),
         behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 5),
+        duration: const Duration(seconds: 2),
       ));
       throw Exception("msg_erro_autorizacao".tr);
     } else {
@@ -902,7 +902,7 @@ class CadastrarComputadorPageState extends State<CadastrarComputadorPage> {
                   bottom: MediaQuery.of(context).size.height - 210,
                   left: 15,
                   right: 15),
-              duration: const Duration(seconds: 5),
+              duration: const Duration(seconds: 2),
             ));
           } else {
             if (!mounted) return;
@@ -916,7 +916,7 @@ class CadastrarComputadorPageState extends State<CadastrarComputadorPage> {
                   bottom: MediaQuery.of(context).size.height - 210,
                   left: 15,
                   right: 15),
-              duration: const Duration(seconds: 5),
+              duration: const Duration(seconds: 2),
             ));
           }
         } catch (e) {
@@ -931,7 +931,7 @@ class CadastrarComputadorPageState extends State<CadastrarComputadorPage> {
                 bottom: MediaQuery.of(context).size.height - 210,
                 left: 15,
                 right: 15),
-            duration: const Duration(seconds: 5),
+            duration: const Duration(seconds: 2),
           ));
         }
       }

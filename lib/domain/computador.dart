@@ -1,5 +1,8 @@
 import 'package:avar/domain/connection.dart';
+import 'package:avar/domain/patrimonio.dart';
+import 'package:avar/domain/usuario.dart';
 import 'package:avar/presentation/patrimonios_home_page/editar_computador_page/editar_computador_page.dart';
+import 'package:avar/presentation/patrimonios_home_page/manejar_patrimonio_page/manejar_patrimonio_page.dart';
 import 'package:flutter/material.dart';
 import 'package:avar/core/app_export.dart';
 import 'dart:convert';
@@ -77,8 +80,7 @@ class ComputadorListar extends Connection {
     return data;
   }
 
-  Future<List<ComputadorListar>> listarComputadoresTudo(
-      BuildContext context) async {
+  Future<List<ComputadorListar>> listarComputadoresTudo() async {
     var response =
         await getHttp(montaURL(URIsAPI.uri_listar_computadores_tudo, null));
 
@@ -149,6 +151,58 @@ class ComputadorListar extends Connection {
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   ComputadorListar computador = snapshot.data![index];
+                  Patrimonio patrimonio0 = Patrimonio();
+                  String alienado = computador.alienado! ? "Alienado" : "Ativo";
+                  CustomElevatedButton botaoAlienar = computador.alienado!
+                      ? CustomElevatedButton(
+                          buttonStyle: CustomButtonStyles.fillPrimaryBotLeft,
+                          buttonTextStyle:
+                              CustomTextStyles.titleMediumOnblueGray100,
+                          text: "Alienar",
+                          width: 110.h,
+                          height: 40.v,
+                        )
+                      : CustomElevatedButton(
+                          buttonStyle: CustomButtonStyles.fillRedAccentBotLeft,
+                          buttonTextStyle:
+                              CustomTextStyles.titleMediumOnblueGray100,
+                          text: "Alienar",
+                          width: 110.h,
+                          height: 40.v,
+                          onPressed: () async {
+                            try {
+                              String? usuarioId = await Usuario.recuperarID();
+                              AlienamentoCadastrar alienamentoCadastrar =
+                                  AlienamentoCadastrar(
+                                      patrimonio: computador.id,
+                                      usuario: usuarioId,
+                                      data: DateTime.now());
+
+                              var response = await alienamentoCadastrar.putHttp(
+                                  montaURL(URIsAPI.uri_alienar, null),
+                                  alienamentoCadastrar);
+                              if (response.statusCode == 202) {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  backgroundColor: Colors.greenAccent,
+                                  content: Text(response.body,
+                                      textAlign: TextAlign.center,
+                                      style:
+                                          TextStyle(color: appTheme.black900)),
+                                  behavior: SnackBarBehavior.floating,
+                                  dismissDirection: DismissDirection.up,
+                                  margin: EdgeInsets.only(
+                                      bottom:
+                                          MediaQuery.of(context).size.height -
+                                              210,
+                                      left: 15,
+                                      right: 15),
+                                  duration: const Duration(seconds: 2),
+                                ));
+                              }
+                            } catch (e) {}
+                          },
+                        );
                   return Container(
                     width: double.maxFinite,
                     //margin: EdgeInsets.all(10.h),
@@ -172,40 +226,79 @@ class ComputadorListar extends Connection {
                       tilePadding:
                           EdgeInsets.symmetric(vertical: 0.v, horizontal: 0.h),
                       children: <Widget>[
-                        Text(computador.descricao!),
-                        Text(computador.estado!),
-                        Text(computador.serial!),
-                        Text(computador.sistemaOperacional!),
-                        Text(computador.ram!),
-                        Text(computador.ramDdr!),
-                        Text(computador.hd!),
-                        Text(computador.complexo!),
-                        Text(computador.predio!),
-                        Text(computador.andar!),
-                        Text(computador.comodo!),
+                        Container(
+                          color: appTheme.blueGray100,
+                          width: double.maxFinite,
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.only(top: 4, bottom: 4),
+                          child: Text(computador.descricao!,
+                              style: CustomTextStyles.titleSmallOnPrimary),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(top: 4, bottom: 4),
+                          child: Text(computador.estado!,
+                              style: CustomTextStyles.titleSmallOnblueGray100),
+                        ),
+                        Container(
+                          color: appTheme.blueGray100,
+                          width: double.maxFinite,
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.only(top: 4, bottom: 4),
+                          child: Text(computador.serial!,
+                              style: CustomTextStyles.titleSmallOnPrimary),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(top: 4, bottom: 4),
+                          child: Text(computador.sistemaOperacional!,
+                              style: CustomTextStyles.titleSmallOnblueGray100),
+                        ),
+                        Container(
+                          color: appTheme.blueGray100,
+                          width: double.maxFinite,
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.only(top: 4, bottom: 4),
+                          child: Text(computador.ram!,
+                              style: CustomTextStyles.titleSmallOnPrimary),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(top: 4, bottom: 4),
+                          child: Text(computador.ramDdr!,
+                              style: CustomTextStyles.titleSmallOnblueGray100),
+                        ),
+                        Container(
+                          color: appTheme.blueGray100,
+                          width: double.maxFinite,
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.only(top: 4, bottom: 4),
+                          child: Text(computador.hd!,
+                              style: CustomTextStyles.titleSmallOnPrimary),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(top: 4, bottom: 4),
+                          child: Text(computador.complexo!,
+                              style: CustomTextStyles.titleSmallOnblueGray100),
+                        ),
+                        Text(computador.predio!,
+                            style: CustomTextStyles.titleSmallOnblueGray100),
+                        Text(computador.andar!,
+                            style: CustomTextStyles.titleSmallOnblueGray100),
+                        Text(computador.comodo!,
+                            style: CustomTextStyles.titleSmallOnblueGray100),
                         SizedBox(
                           height: 15.v,
                         ),
                         Row(
                           //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            CustomElevatedButton(
-                              buttonStyle:
-                                  CustomButtonStyles.fillRedAccentBotLeft,
-                              buttonTextStyle:
-                                  CustomTextStyles.titleMediumOnPrimary,
-                              text: "Alienar",
-                              width: 110.h,
-                              height: 30.v,
-                            ),
+                            botaoAlienar,
                             CustomElevatedButton(
                                 buttonStyle:
                                     CustomButtonStyles.fillPrimarySquare,
                                 buttonTextStyle:
-                                    CustomTextStyles.titleMediumOnPrimary,
+                                    CustomTextStyles.titleMediumOnblueGray100,
                                 text: "Editar",
                                 width: 120.h,
-                                height: 30.v,
+                                height: 40.v,
                                 onPressed: () => {
                                       Navigator.push(
                                           context,
@@ -215,14 +308,24 @@ class ComputadorListar extends Connection {
                                                       computador: computador))),
                                     }),
                             CustomElevatedButton(
-                              buttonStyle:
-                                  CustomButtonStyles.fillGreenLightBotRight,
-                              buttonTextStyle:
-                                  CustomTextStyles.titleMediumOnPrimary,
-                              text: "Manejar",
-                              width: 115.h,
-                              height: 30.v,
-                            ),
+                                buttonStyle:
+                                    CustomButtonStyles.fillGreenLightBotRight,
+                                buttonTextStyle:
+                                    CustomTextStyles.titleMediumOnPrimary,
+                                text: "Manejar",
+                                width: 115.h,
+                                height: 40.v,
+                                onPressed: () async => {
+                                      patrimonio0 = await patrimonio0
+                                          .getPatrimonio(computador.id!),
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (_) =>
+                                                  ManejarPatrimonioPage(
+                                                      patrimonio:
+                                                          patrimonio0))),
+                                    }),
                           ],
                         ),
                       ],

@@ -133,6 +133,8 @@ class PrimaryColors {
   Color get greenLight => Color(0XFF69F0AE);
 
   Color get blackLight => Color(0xFF4A4A4A);
+
+  Color get blackLightStrong => Color.fromARGB(255, 39, 39, 39);
 }
 
 PrimaryColors get appTheme => ThemeHelper().themeColor();

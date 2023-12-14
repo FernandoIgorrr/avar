@@ -1,6 +1,5 @@
 import 'package:avar/core/app_export.dart';
 import 'package:avar/domain/computador.dart';
-import 'package:avar/widgets/custom_bottom_bar.dart';
 import 'package:flutter/material.dart';
 
 // ignore_for_file: must_be_immutable
@@ -12,12 +11,17 @@ class ListarComputadoresTudo extends StatefulWidget {
 }
 
 class _ListarComputadoresTudoState extends State<ListarComputadoresTudo> {
+  TextEditingController _searchController = TextEditingController();
+  ValueNotifier<String> _searchNotifier = ValueNotifier<String>("");
+
+  late Future<List<ComputadorListar>> computadores;
   late ComputadorListar computador;
 
   @override
   void initState() {
     super.initState();
     computador = ComputadorListar();
+    computadores = computador.listarComputadoresTudo();
   }
 
   @override
@@ -25,7 +29,7 @@ class _ListarComputadoresTudoState extends State<ListarComputadoresTudo> {
     return SafeArea(
       child: Scaffold(
         appBar: CustomAppBar(
-          title: AppbarTitle(text: "lbl_listar_pc_tudo".tr),
+          title: AppbarTitle(text: "lbl_listar_tudo".tr),
         ),
         body: Container(
           width: double.maxFinite,
@@ -36,13 +40,41 @@ class _ListarComputadoresTudoState extends State<ListarComputadoresTudo> {
               SizedBox(
                 height: 15.v,
               ),
-              computador.listarComputadoresWidget(
-                  computador.listarComputadoresTudo(context)),
+              CustomTextFormField(
+                controller: _searchController,
+                textInputType: TextInputType.number,
+                hintText: "Pesquisar",
+                prefix: const Icon(Icons.search),
+                onChanged: searchBox,
+              ),
+              SizedBox(
+                height: 15.v,
+              ),
+              ValueListenableBuilder<String>(
+                  valueListenable: _searchNotifier,
+                  builder: (context, value, child) {
+                    return computador.listarComputadoresWidget(computadores);
+                  }),
             ],
           ),
         ),
-        bottomNavigationBar: CustomBottomBar(),
+        endDrawer: const CustomNavigationDrawer(),
       ),
     );
+  }
+
+  Future<void> searchBox(String query) async {
+    final computadores0 = await computador.listarComputadoresTudo();
+    final pts = computadores0.where((element) {
+      String tombamento = element.tombamento ?? "";
+      String modelo = element.modelo ?? "";
+
+      return tombamento.contains(query) || modelo.contains(query);
+    }).toList();
+
+    setState(() {
+      computadores = Future.value(pts);
+      _searchNotifier.value = query;
+    });
   }
 }

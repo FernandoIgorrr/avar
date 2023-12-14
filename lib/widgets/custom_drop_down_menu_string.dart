@@ -44,8 +44,6 @@ class _CustomDropDownMenuStringState extends State<CustomDropDownMenuString> {
   void initState() {
     widget.selectedItemIdController?.text =
         items.first[descName ?? 'descricao'];
-    //reloadElement?.value = items.first[descName ?? 'descricao'];
-
     super.initState();
   }
 

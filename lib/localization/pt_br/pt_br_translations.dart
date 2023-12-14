@@ -5,12 +5,21 @@ final Map<String, String> ptBr = {
   "lbl_usuario": "Usuário",
 
   // Funcionario_Home Screen
-  "lbl_patrimonios": "Patrimônios",
   "lbl_bolsistas": "Bolsistas",
   "lbl_chamados": "Chamados",
   "lbl_home": "Home",
   "lbl_relatorios": "Relatórios",
   "lbl_tarefas": "Tarefas",
+
+  // Cadastrar bolsista Screen
+  "lbl_cadastrar_bolsista": "Cadastrar bolsista",
+  "lbl_login": "Login",
+  "lbl_nome": "Nome",
+  "lbl_matricula": "Matrícula",
+  "lbl_email": "E-mail",
+  "lbl_telefone": "Telefone",
+  "lbl_data_inicio": "Data de inicio",
+  "lbl_tipo_bolsista": "Tipo bolsista",
 
   // Patrimonios One Screen
   "lbl_alienamentos": "Alienamentos",
@@ -20,6 +29,10 @@ final Map<String, String> ptBr = {
   "lbl_manejos": "Manejos",
   "lbl_sobre": "Sobre",
   "lbl_transferencias": "Transferências",
+  "lbl_manejar_patrimonio": "Manejar patrimônio",
+  "lbl_localidade_atual": "Localidade atual",
+  "lbl_nova_localidade": "Nova localidade",
+  "lbl_manejar": "Manejar",
 
   // Cadastrar_Patrimonio Screen
   "msg_cadastrar_patrimonio": "Cadastrar patrimônio",
@@ -46,6 +59,10 @@ final Map<String, String> ptBr = {
   // Aterar dados
   "lbl_alterar": "Alterar",
   "lbl_alterar_dados": "Alterar dados",
+  "lbl_alterar_senha": "Alterar senha",
+  "lbl_senha_antiga": "Senha antiga",
+  "lbl_nova_senha": "Nova senha",
+  "lbl_repita_nova_senha": "Repita a nova senha",
 
   // LIstar_por_comodo Screen
   "lbl_localidade": "Localidade",
@@ -54,6 +71,16 @@ final Map<String, String> ptBr = {
   "lbl_complexo": "  Complexo",
   "lbl_predio": "  Prédio",
   "msg_baixar": "Baixar               Listar",
+
+  // CHAMADOS
+  "lbl_listar_por_estado": "Listar por estado",
+
+  // Listar bolsista screen
+  "lbl_desligar_bolsista": "Desligar bolsista",
+  "lbl_listar_bolsistas": "Listar bolsistas",
+  "lbl_listar_todos": "Listar todos",
+  "lbl_listar_ativos": "Listar ativos",
+  "lbl_listar_desligados": "Listar Desligados",
 
   // Desligar Bolsista Screen
   "lbl_desligar": "Desligar", "lbl_justificativa": "  Justificativa",

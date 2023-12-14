@@ -84,30 +84,3 @@ abstract class Connection extends Erro {
 
   Map<String, dynamic> toJson();
 }
-
-
-
-
-    // if (token == '' || token == null) {
-    //   _getHttpHeader = {
-    //     'Content-Type': 'application/json',
-    //     'Accept': 'application/json',
-    //     'Authorization': ''
-    //   };
-
-    //   _postHttpHeader = {
-    //     'Content-Type': 'application/json',
-    //     'Authorization': ''
-    //   };
-    // } else {
-    //   _getHttpHeader = {
-    //     'Content-Type': 'application/json',
-    //     'Accept': 'application/json',
-    //     'Authorization': token
-    //   };
-
-    //   _postHttpHeader = {
-    //     'Content-Type': 'application/json',
-    //     'Authorization': token
-    //   };
-    // }

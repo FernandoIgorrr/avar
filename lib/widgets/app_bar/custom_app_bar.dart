@@ -38,14 +38,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       toolbarHeight: height ?? 60.v,
       backgroundColor: appTheme.purple500,
       flexibleSpace: _getStyle(),
-      //leading: leading,
       title: title,
       titleSpacing: 0,
-      //actions: actions,
       centerTitle: centerTitle ?? true,
-      iconTheme: IconThemeData(
-        color: appTheme.blueGray100,
-      ),
+      iconTheme: IconThemeData(color: appTheme.blueGray100, size: 35.adaptSize),
     );
   }
 

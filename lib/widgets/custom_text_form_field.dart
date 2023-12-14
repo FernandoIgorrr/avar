@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:avar/core/app_export.dart';
 import 'package:flutter/material.dart';
 
@@ -26,6 +28,9 @@ class CustomTextFormField extends StatelessWidget {
     this.filled = true,
     this.validator,
     this.textAlign,
+    this.readOnly,
+    this.inputDecoration,
+    this.onChanged,
   }) : super(
           key: key,
         );
@@ -34,9 +39,13 @@ class CustomTextFormField extends StatelessWidget {
 
   final TextAlign? textAlign;
 
+  final bool? readOnly;
+
   final double? width;
 
   final TextEditingController? controller;
+
+  final InputDecoration? inputDecoration;
 
   final FocusNode? focusNode;
 
@@ -75,6 +84,8 @@ class CustomTextFormField extends StatelessWidget {
   final FormFieldValidator<String>? validator;
 
   final double radius = 10;
+  final void Function(String)? onChanged;
+  void onChanged0(String value) {}
 
   @override
   Widget build(BuildContext context) {
@@ -90,6 +101,7 @@ class CustomTextFormField extends StatelessWidget {
         width: width ?? double.maxFinite,
         child: TextFormField(
           controller: controller,
+          readOnly: readOnly ?? false,
           focusNode: focusNode ?? FocusNode(),
           autofocus: autofocus!,
           style: textStyle ?? CustomTextStyles.titleLargeBlack900,
@@ -98,8 +110,9 @@ class CustomTextFormField extends StatelessWidget {
           textAlign: textAlign ?? TextAlign.center,
           keyboardType: textInputType,
           maxLines: maxLines ?? 1,
-          decoration: decoration,
+          decoration: inputDecoration ?? decoration,
           validator: validator,
+          onChanged: onChanged ?? (value) {},
         ),
       );
   InputDecoration get decoration => InputDecoration(

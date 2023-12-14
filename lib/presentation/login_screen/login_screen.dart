@@ -139,10 +139,28 @@ class _LoginScreenState extends State<LoginScreen> {
                 'tipo_usuario_id', '${usuario.tipoUsuario!.id}');
             await _sharedPreferences.setString(
                 'tipo_usuario_desc', usuario.tipoUsuario!.descricao!);
-            print(
-                "${usuario.id} | ${usuario.login} | ${usuario.tipoUsuario!.id}");
+
+            // print(
+            //     "${usuario.id} | ${usuario.login} | ${usuario.tipoUsuario!.id}");
+            if (usuario.tipoUsuario!.id == 1) {
+              await _sharedPreferences.setString(
+                  'home_page', AppRoutes.supervisorHomePage);
+              Navigator.of(context)
+                  .pushReplacementNamed(AppRoutes.supervisorHomePage);
+            } else {
+              await _sharedPreferences.setString(
+                  'home_page', AppRoutes.bolsistaHomePage);
+              Navigator.of(context)
+                  .pushReplacementNamed(AppRoutes.bolsistaHomePage);
+            }
           } else {
-            print("DEU ERRADO!");
+            // ignore: use_build_context_synchronously
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              backgroundColor: Colors.redAccent,
+              content: Text("Algo deu errado", textAlign: TextAlign.center),
+              behavior: SnackBarBehavior.floating,
+              duration: Duration(seconds: 5),
+            ));
           }
         } catch (e) {
           if (!mounted) return;
@@ -153,8 +171,6 @@ class _LoginScreenState extends State<LoginScreen> {
             duration: Duration(seconds: 5),
           ));
         }
-        Navigator.of(context)
-            .pushReplacementNamed(AppRoutes.supervisorHomePage);
       } else {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(

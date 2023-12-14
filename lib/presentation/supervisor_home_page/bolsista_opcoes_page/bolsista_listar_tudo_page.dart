@@ -1,28 +1,27 @@
 import 'package:avar/core/app_export.dart';
-import 'package:avar/domain/patrimonio.dart';
+import 'package:avar/domain/usuario.dart';
 import 'package:flutter/material.dart';
 
 // ignore_for_file: must_be_immutable
-class ListarPatrimoniosTudo extends StatefulWidget {
-  const ListarPatrimoniosTudo({Key? key}) : super(key: key);
+class BolsistaListarTudo extends StatefulWidget {
+  const BolsistaListarTudo({Key? key}) : super(key: key);
 
   @override
-  State<ListarPatrimoniosTudo> createState() => _ListarPatrimoniosTudoState();
+  State<BolsistaListarTudo> createState() => _BolsistaListarTudoState();
 }
 
-class _ListarPatrimoniosTudoState extends State<ListarPatrimoniosTudo> {
+class _BolsistaListarTudoState extends State<BolsistaListarTudo> {
   TextEditingController _searchController = TextEditingController();
-
   ValueNotifier<String> _searchNotifier = ValueNotifier<String>("");
 
-  late Future<List<PatrimonioListar>> patrimonios;
-  late PatrimonioListar patrimonio;
+  late Future<List<BolsistaListar>> bolsistas;
+  late BolsistaListar bolsista;
 
   @override
   void initState() {
     super.initState();
-    patrimonio = PatrimonioListar();
-    patrimonios = patrimonio.listarPatrimoniosTudo();
+    bolsista = BolsistaListar();
+    bolsistas = bolsista.listarBolsistasTudo();
   }
 
   @override
@@ -54,7 +53,7 @@ class _ListarPatrimoniosTudoState extends State<ListarPatrimoniosTudo> {
               ValueListenableBuilder<String>(
                   valueListenable: _searchNotifier,
                   builder: (context, value, child) {
-                    return patrimonio.listarPatrimoniosWidget(patrimonios);
+                    return bolsista.listarBolsistasWidget(bolsistas);
                   }),
             ],
           ),
@@ -65,14 +64,18 @@ class _ListarPatrimoniosTudoState extends State<ListarPatrimoniosTudo> {
   }
 
   Future<void> searchBox(String query) async {
-    final patrimonios0 = await patrimonio.listarPatrimoniosTudo();
-    final pts = patrimonios0.where((element) {
-      String tombamento = element.tombamento ?? "";
-      return tombamento.contains(query);
+    final bolsistas0 = await bolsista.listarBolsistasTudo();
+    final pts = bolsistas0.where((element) {
+      String matricula = element.matricula!.toLowerCase();
+      String nome = element.nome!.toLowerCase();
+      String login = element.login!.toLowerCase();
+      return matricula.contains(query.toLowerCase()) ||
+          nome.contains(query) ||
+          login.contains(query);
     }).toList();
 
     setState(() {
-      patrimonios = Future.value(pts);
+      bolsistas = Future.value(pts);
       _searchNotifier.value = query;
     });
   }

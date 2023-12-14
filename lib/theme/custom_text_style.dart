@@ -10,10 +10,12 @@ class CustomTextStyles {
   static get headlineSmallOnPrimary => theme.textTheme.headlineSmall!.copyWith(
         color: theme.colorScheme.onPrimary,
       );
+
   // Title text style
   static get titleLargeBlack900 => theme.textTheme.titleLarge!.copyWith(
         color: appTheme.black900,
       );
+
   static get titleLargeBlack900Opa => theme.textTheme.titleLarge!.copyWith(
         color: appTheme.black900opacity,
       );
@@ -24,6 +26,18 @@ class CustomTextStyles {
 
   static get titleMediumOnPrimary => theme.textTheme.titleMedium!.copyWith(
         color: theme.colorScheme.onPrimary,
+      );
+
+  static get titleSmallOnblueGray100 => theme.textTheme.titleSmall!.copyWith(
+        color: appTheme.blueGray100,
+      );
+
+  static get titleMediumOnblueGray100 => theme.textTheme.titleMedium!.copyWith(
+        color: appTheme.blueGray100,
+      );
+
+  static get titleLargeOnblueGray100 => theme.textTheme.titleLarge!.copyWith(
+        color: appTheme.blueGray100,
       );
 
   static get titleSmallOnPrimary => theme.textTheme.titleSmall!.copyWith(

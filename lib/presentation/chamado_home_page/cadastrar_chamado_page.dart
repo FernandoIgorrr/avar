@@ -1,26 +1,25 @@
 import 'package:avar/core/app_export.dart';
+import 'package:avar/domain/chamado.dart';
 import 'package:avar/domain/localidade.dart';
 import 'package:avar/domain/patrimonio.dart';
+import 'package:avar/domain/usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 // ignore_for_file: must_be_immutable
-class CadastrarPatrimonioPage extends StatefulWidget {
-  const CadastrarPatrimonioPage({Key? key}) : super(key: key);
+class CadastrarChamadoPage extends StatefulWidget {
+  const CadastrarChamadoPage({Key? key}) : super(key: key);
 
   @override
-  State<CadastrarPatrimonioPage> createState() =>
-      CadastrarPatrimonioPageState();
+  State<CadastrarChamadoPage> createState() => CadastrarChamadoPageState();
 }
 
-class CadastrarPatrimonioPageState extends State<CadastrarPatrimonioPage> {
-  TextEditingController _tombamentoController = TextEditingController();
+class CadastrarChamadoPageState extends State<CadastrarChamadoPage> {
+  TextEditingController _tituloController = TextEditingController();
 
   TextEditingController _descricaoController = TextEditingController();
-
-  TextEditingController _estadoController = TextEditingController();
 
   TextEditingController _tipoController = TextEditingController();
 
@@ -41,9 +40,13 @@ class CadastrarPatrimonioPageState extends State<CadastrarPatrimonioPage> {
   GlobalKey<NavigatorState> navigatorKey = GlobalKey();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  late TipoChamado tipo;
+
   @override
   void initState() {
     super.initState();
+
+    tipo = TipoChamado();
   }
 
   @override
@@ -51,7 +54,7 @@ class CadastrarPatrimonioPageState extends State<CadastrarPatrimonioPage> {
     return SafeArea(
       child: Scaffold(
         appBar: CustomAppBar(
-          title: AppbarTitle(text: "lbl_cadastrar_patrimonio".tr),
+          title: AppbarTitle(text: "lbl_cadastrar_chamado".tr),
         ),
         body: SingleChildScrollView(
           child: Container(
@@ -69,11 +72,11 @@ class CadastrarPatrimonioPageState extends State<CadastrarPatrimonioPage> {
                       child: Column(
                         children: [
                           Text(
-                            "lbl_tombamento".tr,
+                            "lbl_titulo".tr,
                             style: theme.textTheme.titleLarge,
                           ),
                           SizedBox(height: 12.v),
-                          _buildTombamento(context),
+                          _buildTitulo(context),
                           SizedBox(height: 14.v),
                           Text(
                             "lbl_descricao".tr,
@@ -82,25 +85,6 @@ class CadastrarPatrimonioPageState extends State<CadastrarPatrimonioPage> {
                           SizedBox(height: 10.v),
                           _buildDescricao(context),
                           SizedBox(height: 12.v),
-                          Text(
-                            "lbl_estado".tr,
-                            style: theme.textTheme.titleLarge,
-                          ),
-                          SizedBox(height: 12.v),
-                          FutureBuilder<Widget>(
-                            future: _buildEstados(context),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const LinearProgressIndicator();
-                              } else if (snapshot.hasError) {
-                                return Text('Erro: ${snapshot.error}');
-                              } else {
-                                return snapshot.data ?? const SizedBox();
-                              }
-                            },
-                          ),
-                          SizedBox(height: 14.v),
                           Text(
                             "lbl_tipo".tr,
                             style: theme.textTheme.titleLarge,
@@ -245,15 +229,13 @@ class CadastrarPatrimonioPageState extends State<CadastrarPatrimonioPage> {
   }
 
   /// Section Widget
-  Widget _buildTombamento(BuildContext context) {
+  Widget _buildTitulo(BuildContext context) {
     return CustomTextFormField(
-      controller: _tombamentoController,
+      controller: _tituloController,
       textInputType: TextInputType.number,
-      validator: (tombamento) {
-        if (tombamento == null || tombamento.isEmpty) {
-          return 'Tombamento vazio!';
-        } else if (!RegExp(r'^[0-9]+$').hasMatch(_tombamentoController.text)) {
-          return 'O tombamento aceita apenas números!';
+      validator: (titulo) {
+        if (titulo == null || titulo.isEmpty) {
+          return 'Título vazio!';
         }
         return null;
       },
@@ -282,18 +264,8 @@ class CadastrarPatrimonioPageState extends State<CadastrarPatrimonioPage> {
     );
   }
 
-  /// Section Widget
-  Future<Widget> _buildEstados(BuildContext context) async {
-    List<Map<String, dynamic>> items = await listarEstadosPatrimonio();
-    return CustomDropDownMenu(
-      selectedItemIdController: _estadoController,
-      items: items,
-      selectedItemId: items.first['id'],
-    );
-  }
-
   Future<Widget> _buildTipos(BuildContext context) async {
-    List<Map<String, dynamic>> items = await listarTiposPatrimonio();
+    List<Map<String, dynamic>> items = await tipo.listarTipos();
     return CustomDropDownMenu(
       selectedItemIdController: _tipoController,
       items: items,
@@ -367,72 +339,6 @@ class CadastrarPatrimonioPageState extends State<CadastrarPatrimonioPage> {
         onPressed: () {
           cadastrar();
         });
-  }
-
-  Future<List<Map<String, dynamic>>> listarEstadosPatrimonio() async {
-    String? token = await recuperarToken();
-    if (token == '' || token == null) {
-      //if (!mounted) return new List<Patrimonio>();
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        backgroundColor: Colors.redAccent,
-        content: Text("msg_erro_autorizacao".tr, textAlign: TextAlign.center),
-        behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 5),
-      ));
-      throw Exception("msg_erro_autorizacao".tr);
-    } else {
-      var url = Uri.parse(URIsAPI.uri_estados_patrimono);
-
-      var response = await http.get(url, headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': token
-      });
-      if (response.statusCode == 200) {
-        List estadosPatrimonio0 = jsonDecode(utf8.decode(response.bodyBytes));
-
-        var estadosPatrimonio = estadosPatrimonio0
-            .map((json) => EstadoPatrimonio.fromJson(json))
-            .toList();
-        return EstadoPatrimonio.convertListToMapList(estadosPatrimonio);
-      } else {
-        throw Exception("msg_erro_autorizacao".tr);
-      }
-    }
-  }
-
-  Future<List<Map<String, dynamic>>> listarTiposPatrimonio() async {
-    String? token = await recuperarToken();
-    if (token == '' || token == null) {
-      // if (!mounted) return new List<Patrimonio>();
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        backgroundColor: Colors.redAccent,
-        content: Text("msg_erro_autorizacao".tr, textAlign: TextAlign.center),
-        behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 5),
-      ));
-      throw Exception("msg_erro_autorizacao".tr);
-    } else {
-      var url = Uri.parse(URIsAPI.uri_tipos_patrimono);
-
-      var response = await http.get(url, headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': token
-      });
-      if (response.statusCode == 200) {
-        List tiposPatrimonio0 = jsonDecode(utf8.decode(response.bodyBytes));
-
-        var tiposPatrimonio = tiposPatrimonio0
-            .map((json) => TipoPatrimonio.fromJson(json))
-            .toList();
-        return TipoPatrimonio.convertListToMapList(tiposPatrimonio);
-      } else {
-        throw Exception("msg_erro_autorizacao".tr);
-      }
-    }
   }
 
   Future<List<Map<String, dynamic>>> listarComplexos() async {
@@ -576,18 +482,20 @@ class CadastrarPatrimonioPageState extends State<CadastrarPatrimonioPage> {
 
   cadastrar() async {
     if (_formKey.currentState!.validate()) {
-      PatrimonioCadastrar patrimonio = PatrimonioCadastrar(
-          tombamento: _tombamentoController.text,
-          descricao: _descricaoController.text,
-          estado: int.parse(_estadoController.text),
-          tipo: int.parse(_tipoController.text),
-          localidade: int.parse(_comodoController.text),
-          alienado: false);
+      String? userId = await Usuario.recuperarID();
+      ChamadoCadastrar chamadoCadastrar = ChamadoCadastrar(
+        titulo: _tituloController.text,
+        descricao: _descricaoController.text,
+        criador: userId,
+        dataAbertura: DateTime.now(),
+        localidade: int.parse(_comodoController.text),
+        tipo: int.parse(_tipoController.text),
+      );
 
       try {
-        var response = await patrimonio.postHttp(
-            patrimonio.montaURL(URIsAPI.uri_cadastrar_patrimonio, null),
-            patrimonio);
+        var response = await chamadoCadastrar.postHttp(
+            chamadoCadastrar.montaURL(URIsAPI.uri_cadastrar_chamado, null),
+            chamadoCadastrar);
 
         if (response.statusCode == 201) {
           if (!mounted) return;

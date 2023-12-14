@@ -3,26 +3,26 @@ import 'package:avar/domain/patrimonio.dart';
 import 'package:flutter/material.dart';
 
 // ignore_for_file: must_be_immutable
-class ListarPatrimoniosTudo extends StatefulWidget {
-  const ListarPatrimoniosTudo({Key? key}) : super(key: key);
+class ListarManejosTudo extends StatefulWidget {
+  const ListarManejosTudo({Key? key}) : super(key: key);
 
   @override
-  State<ListarPatrimoniosTudo> createState() => _ListarPatrimoniosTudoState();
+  State<ListarManejosTudo> createState() => _LListarManejosTudoState();
 }
 
-class _ListarPatrimoniosTudoState extends State<ListarPatrimoniosTudo> {
+class _LListarManejosTudoState extends State<ListarManejosTudo> {
   TextEditingController _searchController = TextEditingController();
 
   ValueNotifier<String> _searchNotifier = ValueNotifier<String>("");
 
-  late Future<List<PatrimonioListar>> patrimonios;
-  late PatrimonioListar patrimonio;
+  late Future<List<ManejoListar>> manejos;
+  late ManejoListar manejo;
 
   @override
   void initState() {
     super.initState();
-    patrimonio = PatrimonioListar();
-    patrimonios = patrimonio.listarPatrimoniosTudo();
+    manejo = ManejoListar();
+    manejos = manejo.listarManejosTudo();
   }
 
   @override
@@ -54,7 +54,7 @@ class _ListarPatrimoniosTudoState extends State<ListarPatrimoniosTudo> {
               ValueListenableBuilder<String>(
                   valueListenable: _searchNotifier,
                   builder: (context, value, child) {
-                    return patrimonio.listarPatrimoniosWidget(patrimonios);
+                    return manejo.listarManejosWidget(manejos);
                   }),
             ],
           ),
@@ -65,14 +65,22 @@ class _ListarPatrimoniosTudoState extends State<ListarPatrimoniosTudo> {
   }
 
   Future<void> searchBox(String query) async {
-    final patrimonios0 = await patrimonio.listarPatrimoniosTudo();
-    final pts = patrimonios0.where((element) {
+    query = query.toLowerCase();
+    final manejos0 = await manejo.listarManejosTudo();
+    final pts = manejos0.where((element) {
+      String id = element.id.toString();
       String tombamento = element.tombamento ?? "";
-      return tombamento.contains(query);
+      String tipo = element.tipo!.toLowerCase();
+      String nome = element.nome!.toLowerCase();
+
+      return id.contains(query) ||
+          tombamento.contains(query) ||
+          tipo.contains(query) ||
+          nome.contains(query);
     }).toList();
 
     setState(() {
-      patrimonios = Future.value(pts);
+      manejos = Future.value(pts);
       _searchNotifier.value = query;
     });
   }

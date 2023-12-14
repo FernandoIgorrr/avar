@@ -1,43 +1,44 @@
 import 'package:avar/core/app_export.dart';
-import 'package:avar/domain/patrimonio.dart';
+import 'package:avar/domain/usuario.dart';
 import 'package:flutter/material.dart';
 
 // ignore_for_file: must_be_immutable
-class EditarPatrimonioPage extends StatefulWidget {
-  EditarPatrimonioPage({Key? key, required this.patrimonio}) : super(key: key);
+class EditarBolsistaPage extends StatefulWidget {
+  EditarBolsistaPage({Key? key, required this.bolsista}) : super(key: key);
 
-  PatrimonioListar patrimonio;
+  BolsistaListar bolsista;
 
   @override
-  State<EditarPatrimonioPage> createState() => EditarPatrimonioPageState();
+  State<EditarBolsistaPage> createState() => EditarBolsistaPageState();
 }
 
-class EditarPatrimonioPageState extends State<EditarPatrimonioPage> {
-  TextEditingController _tombamentoController = TextEditingController();
+class EditarBolsistaPageState extends State<EditarBolsistaPage> {
+  TextEditingController _matriculaController = TextEditingController();
 
-  TextEditingController _descricaoController = TextEditingController();
+  TextEditingController _nomeController = TextEditingController();
 
-  TextEditingController _estadoController = TextEditingController();
+  TextEditingController _loginController = TextEditingController();
+  TextEditingController _telefoneController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
 
-  TextEditingController _tipoController = TextEditingController();
+  TextEditingController _tipoBolsistaController = TextEditingController();
 
   GlobalKey<NavigatorState> navigatorKey = GlobalKey();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  late EstadoPatrimonio estado;
-
-  late TipoPatrimonio tipo;
+  late TipoBolsista tipo;
 
   @override
   void initState() {
     super.initState();
 
-    estado = EstadoPatrimonio();
+    tipo = TipoBolsista();
 
-    tipo = TipoPatrimonio();
-
-    _tombamentoController.text = widget.patrimonio.tombamento.toString();
-    _descricaoController.text = widget.patrimonio.descricao.toString();
+    _matriculaController.text = widget.bolsista.matricula.toString();
+    _nomeController.text = widget.bolsista.nome.toString();
+    _loginController.text = widget.bolsista.login.toString();
+    _telefoneController.text = widget.bolsista.telefone.toString();
+    _emailController.text = widget.bolsista.email.toString();
   }
 
   @override
@@ -63,38 +64,40 @@ class EditarPatrimonioPageState extends State<EditarPatrimonioPage> {
                       child: Column(
                         children: [
                           Text(
-                            "lbl_tombamento".tr,
+                            "lbl_matricula".tr,
                             style: theme.textTheme.titleLarge,
                           ),
                           SizedBox(height: 12.v),
-                          _buildTombamento(context),
+                          _buildmatricula(context),
                           SizedBox(height: 14.v),
                           Text(
-                            "lbl_descricao".tr,
+                            "lbl_nome".tr,
                             style: theme.textTheme.titleLarge,
                           ),
                           SizedBox(height: 12.v),
-                          _buildDescricao(context),
+                          _buildNome(context),
                           SizedBox(height: 12.v),
                           Text(
-                            "lbl_estado".tr,
+                            "lbl_login".tr,
                             style: theme.textTheme.titleLarge,
                           ),
                           SizedBox(height: 12.v),
-                          FutureBuilder<Widget>(
-                            future: _buildEstados(context),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const LinearProgressIndicator();
-                              } else if (snapshot.hasError) {
-                                return Text('Erro: ${snapshot.error}');
-                              } else {
-                                return snapshot.data ?? const SizedBox();
-                              }
-                            },
+                          _buildLogin(context),
+                          SizedBox(height: 12.v),
+                          Text(
+                            "lbl_email".tr,
+                            style: theme.textTheme.titleLarge,
                           ),
-                          SizedBox(height: 14.v),
+                          SizedBox(height: 12.v),
+                          _buildEmail(context),
+                          SizedBox(height: 12.v),
+                          Text(
+                            "lbl_telefone".tr,
+                            style: theme.textTheme.titleLarge,
+                          ),
+                          SizedBox(height: 12.v),
+                          _buildTelefone(context),
+                          SizedBox(height: 12.v),
                           Text(
                             "lbl_tipo".tr,
                             style: theme.textTheme.titleLarge,
@@ -131,15 +134,15 @@ class EditarPatrimonioPageState extends State<EditarPatrimonioPage> {
   }
 
   /// Section Widget
-  Widget _buildTombamento(BuildContext context) {
+  Widget _buildmatricula(BuildContext context) {
     return CustomTextFormField(
-      controller: _tombamentoController,
+      controller: _matriculaController,
       textInputType: TextInputType.number,
-      validator: (tombamento) {
-        if (tombamento == null || tombamento.isEmpty) {
-          return 'Tombamento vazio!';
-        } else if (!RegExp(r'^[0-9]+$').hasMatch(_tombamentoController.text)) {
-          return 'O tombamento aceita apenas números!';
+      validator: (matricula) {
+        if (matricula == null || matricula.isEmpty) {
+          return 'Matricula vazia!';
+        } else if (!RegExp(r'^[0-9]+$').hasMatch(_matriculaController.text)) {
+          return 'A matricula aceita apenas números!';
         }
         return null;
       },
@@ -151,13 +154,12 @@ class EditarPatrimonioPageState extends State<EditarPatrimonioPage> {
   }
 
   /// Section Widget
-  Widget _buildDescricao(BuildContext context) {
+  Widget _buildNome(BuildContext context) {
     return CustomTextFormField(
-      controller: _descricaoController,
-      maxLines: 3,
-      validator: (descricao) {
-        if (descricao == null || descricao.isEmpty) {
-          return 'Descrição vazia!';
+      controller: _nomeController,
+      validator: (nome) {
+        if (nome == null || nome.isEmpty) {
+          return 'Nome vazio!';
         }
         return null;
       },
@@ -168,20 +170,63 @@ class EditarPatrimonioPageState extends State<EditarPatrimonioPage> {
     );
   }
 
-  Future<Widget> _buildEstados(BuildContext context) async {
-    List<Map<String, dynamic>> items = await estado.listarEstados();
-    return CustomDropDownMenu(
-      selectedItem: widget.patrimonio.estado,
-      selectedItemIdController: _estadoController,
-      items: items,
+  Widget _buildLogin(BuildContext context) {
+    return CustomTextFormField(
+      controller: _loginController,
+      validator: (login) {
+        if (login == null || login.isEmpty) {
+          return 'Login vazio!';
+        }
+        return null;
+      },
+      contentPadding: EdgeInsets.symmetric(
+        horizontal: 15.h,
+        vertical: 12.v,
+      ),
+    );
+  }
+
+  Widget _buildTelefone(BuildContext context) {
+    return CustomTextFormField(
+      controller: _telefoneController,
+      textInputType: TextInputType.number,
+      validator: (telefone) {
+        if (telefone == null || telefone.isEmpty) {
+          return 'Telefone vazio!';
+        } else if (!RegExp(r'^[0-9]+$').hasMatch(_telefoneController.text)) {
+          return 'O telefone aceita apenas números!';
+        }
+        return null;
+      },
+      contentPadding: EdgeInsets.symmetric(
+        horizontal: 0.h,
+        vertical: 12.v,
+      ),
+    );
+  }
+
+  Widget _buildEmail(BuildContext context) {
+    return CustomTextFormField(
+      controller: _emailController,
+      textInputType: TextInputType.emailAddress,
+      validator: (email) {
+        if (email == null || email.isEmpty) {
+          return 'E-mail vazio!';
+        }
+        return null;
+      },
+      contentPadding: EdgeInsets.symmetric(
+        horizontal: 15.h,
+        vertical: 12.v,
+      ),
     );
   }
 
   Future<Widget> _buildTipos(BuildContext context) async {
     List<Map<String, dynamic>> items = await tipo.listarTipos();
     return CustomDropDownMenu(
-      selectedItem: widget.patrimonio.tipo,
-      selectedItemIdController: _tipoController,
+      selectedItem: widget.bolsista.tipo,
+      selectedItemIdController: _tipoBolsistaController,
       items: items,
     );
   }
@@ -201,19 +246,21 @@ class EditarPatrimonioPageState extends State<EditarPatrimonioPage> {
 
   alterar() async {
     if (_formKey.currentState!.validate()) {
-      PatrimonioCadastrar patrimonio = PatrimonioCadastrar(
-          id: widget.patrimonio.id,
-          tombamento: _tombamentoController.text,
-          descricao: _descricaoController.text,
-          estado: int.parse(_estadoController.text),
-          tipo: int.parse(_tipoController.text),
-          alienado: false);
-
-      print("PATRIMONIO: /n ${patrimonio.toJson()}");
+      BolsistaCadastrar bolsista = BolsistaCadastrar(
+        id: widget.bolsista.id,
+        matricula: _matriculaController.text,
+        login: _loginController.text,
+        nome: _nomeController.text,
+        email: _emailController.text,
+        telefone: _telefoneController.text,
+        tipoBolsista: int.parse(_tipoBolsistaController.text),
+        dataChegada: DateTime.now(),
+      );
       try {
-        var response = await patrimonio.putHttp(
-            patrimonio.montaURL(URIsAPI.Uri_alterar_dados_patrimonio, null),
-            patrimonio);
+        print(bolsista.toJson());
+        var response = await bolsista.putHttp(
+            bolsista.montaURL(URIsAPI.uri_alterar_dados_bolsista, null),
+            bolsista);
 
         if (response.statusCode == 202) {
           if (!mounted) return;
@@ -258,7 +305,7 @@ class EditarPatrimonioPageState extends State<EditarPatrimonioPage> {
               bottom: MediaQuery.of(context).size.height - 210,
               left: 15,
               right: 15),
-          duration: const Duration(seconds: 2),
+          duration: const Duration(seconds: 3),
         ));
       }
     }

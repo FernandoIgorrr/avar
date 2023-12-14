@@ -99,7 +99,7 @@ class _ListarComputadoresPorPredioState
                 }),
           ]),
         ),
-        bottomNavigationBar: CustomBottomBar(),
+        endDrawer: const CustomNavigationDrawer(),
       ),
     );
   }

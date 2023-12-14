@@ -3,8 +3,8 @@ import 'package:avar/widgets/custom_bottom_bar.dart';
 import 'package:flutter/material.dart';
 
 // ignore_for_file: must_be_immutable
-class ListarComputadoresPage extends StatelessWidget {
-  const ListarComputadoresPage({Key? key})
+class BolsistaPage extends StatelessWidget {
+  const BolsistaPage({Key? key})
       : super(
           key: key,
         );
@@ -16,37 +16,27 @@ class ListarComputadoresPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: CustomAppBar(
-          title: AppbarTitle(text: "lbl_listar_computadores".tr),
+          title: AppbarTitle(text: 'lbl_bolsistas'.tr),
         ),
         body: Container(
           width: double.maxFinite,
           decoration: AppDecoration.fillOnPrimary,
           child: Column(
             children: [
-              SizedBox(height: 25.adaptSize),
+              const SizedBox(height: 25),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ButtonIcon(
-                      text: "lbl_listar_pc_tudo".tr,
-                      routeName: AppRoutes.listarComputadoresTudo),
-                  ButtonIcon(
-                    text: "lbl_listar_por_complexo".tr,
-                    routeName: AppRoutes.listarComputadoresComplexo,
+                    text: "lbl_cadastrar".tr,
+                    routeName: AppRoutes.cadastrarBolsista,
                   ),
                   ButtonIcon(
-                    text: "lbl_listar_por_predio".tr,
-                    routeName: AppRoutes.listarComputadoresPredio,
+                    text: "lbl_listar".tr,
+                    routeName: AppRoutes.bolsistaListarPage,
                   ),
-                ],
-              ),
-              SizedBox(height: 25.adaptSize),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
                   ButtonIcon(
-                    text: "lbl_listar_por_andar".tr,
-                    routeName: AppRoutes.listarComputadoresAndar,
+                    text: "lbl_desligar_bolsista".tr,
                   ),
                 ],
               ),

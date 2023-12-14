@@ -1,5 +1,4 @@
 import 'package:avar/core/app_export.dart';
-import 'package:avar/widgets/custom_bottom_bar.dart';
 import 'package:flutter/material.dart';
 
 // ignore_for_file: must_be_immutable
@@ -15,9 +14,6 @@ class SupervisorHomePage extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-        // appBar: CustomAppBar(
-        //   title: AppbarTitle(text: 'lbl_home'.tr),
-        // ),
         appBar: CustomAppBar(
             automaticallyImplyLeading: false,
             title: AppbarTitle(
@@ -35,7 +31,9 @@ class SupervisorHomePage extends StatelessWidget {
                   ButtonIcon(
                       text: "lbl_patrimonios".tr,
                       routeName: AppRoutes.patrimoniosHomePage),
-                  ButtonIcon(text: "lbl_chamados".tr),
+                  ButtonIcon(
+                      text: "lbl_chamados".tr,
+                      routeName: AppRoutes.chamadoHomePage),
                   ButtonIcon(text: "lbl_tarefas".tr),
                 ],
               ),
@@ -43,7 +41,9 @@ class SupervisorHomePage extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  ButtonIcon(text: "lbl_bolsistas".tr),
+                  ButtonIcon(
+                      text: "lbl_bolsistas".tr,
+                      routeName: AppRoutes.bolsistaPage),
                   ButtonIcon(text: "lbl_relatorios".tr),
                   ButtonIcon(text: "Datas"),
                 ],
@@ -51,7 +51,7 @@ class SupervisorHomePage extends StatelessWidget {
             ],
           ),
         ),
-        bottomNavigationBar: CustomBottomBar(),
+        endDrawer: const CustomNavigationDrawer(),
       ),
     );
   }
