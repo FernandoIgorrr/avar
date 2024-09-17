@@ -99,8 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   logar() async {
-    SharedPreferences _sharedPreferences =
-        await SharedPreferences.getInstance();
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
     try {
       var url = Uri.parse(URIsAPI.uri_login);
@@ -116,15 +115,17 @@ class _LoginScreenState extends State<LoginScreen> {
 
       String body = jsonEncode(dados);
 
-      final response = await http.post(
-        url,
-        headers: headers,
-        body: body,
-      );
+      final response = await http
+          .post(
+            url,
+            headers: headers,
+            body: body,
+          )
+          .timeout(const Duration(seconds: 3));
 
       if (response.statusCode == 200) {
         String token = jsonDecode(response.body)['token'];
-        await _sharedPreferences.setString('token', 'Bearer $token');
+        await sharedPreferences.setString('token', 'Bearer $token');
         if (!mounted) return;
         Usuario usuario = Usuario();
         try {
@@ -133,22 +134,22 @@ class _LoginScreenState extends State<LoginScreen> {
           if (resposta.statusCode == 200) {
             usuario =
                 Usuario.fromJson(jsonDecode(utf8.decode(resposta.bodyBytes)));
-            await _sharedPreferences.setString('id', usuario.id!);
-            await _sharedPreferences.setString('login', usuario.login!);
-            await _sharedPreferences.setString(
+            await sharedPreferences.setString('id', usuario.id!);
+            await sharedPreferences.setString('login', usuario.login!);
+            await sharedPreferences.setString(
                 'tipo_usuario_id', '${usuario.tipoUsuario!.id}');
-            await _sharedPreferences.setString(
+            await sharedPreferences.setString(
                 'tipo_usuario_desc', usuario.tipoUsuario!.descricao!);
 
-            // print(
-            //     "${usuario.id} | ${usuario.login} | ${usuario.tipoUsuario!.id}");
+            //print(
+            // "${usuario.id} | ${usuario.login} | ${usuario.tipoUsuario!.id}");
             if (usuario.tipoUsuario!.id == 1) {
-              await _sharedPreferences.setString(
+              await sharedPreferences.setString(
                   'home_page', AppRoutes.supervisorHomePage);
               Navigator.of(context)
                   .pushReplacementNamed(AppRoutes.supervisorHomePage);
             } else {
-              await _sharedPreferences.setString(
+              await sharedPreferences.setString(
                   'home_page', AppRoutes.bolsistaHomePage);
               Navigator.of(context)
                   .pushReplacementNamed(AppRoutes.bolsistaHomePage);

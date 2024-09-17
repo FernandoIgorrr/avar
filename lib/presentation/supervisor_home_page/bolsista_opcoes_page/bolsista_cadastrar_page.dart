@@ -55,7 +55,7 @@ class CadastrarBolsistaPageState extends State<CadastrarBolsistaPage> {
           child: Theme(
             data: ThemeData(
                 primaryColor: appTheme.black900,
-                backgroundColor: appTheme.purple500),
+                colorSchemeSeed: appTheme.purple500),
             child: child!,
           ),
         );

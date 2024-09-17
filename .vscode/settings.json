@@ -4,5 +4,6 @@
         "usuário",
         "verificar"
     ],
-    "java.compile.nullAnalysis.mode": "automatic"
+    "java.compile.nullAnalysis.mode": "automatic",
+    "cmake.sourceDirectory": "C:/Users/figordantas/Documents/projetos/avar/linux"
 }
